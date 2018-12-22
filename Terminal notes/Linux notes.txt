@@ -1,0 +1,218 @@
+1 - To restart your system:
+
+	Ctrl + Alt + BackSpace
+
+
+
+2 - To check if java is installed:
+
+	which java
+
+
+    To check if java compiler is installed:
+
+	javac -version
+
+    
+To check the version of java on your computer:
+
+	java -version
+
+
+
+3 - To put Trash icon on desktop, got settings -> Desktop and switch appropriate switch.
+
+
+
+4 - Folders starting with . (ex: .theme) are hidden. To unhide/hide and to see them in folder, just open the folder and press:
+	Ctrl+H.
+
+
+
+5 - Sometimes .sh files are not executed, in that cases try to convert them into executable by
+ 
+	chmod +x <your .sh file>
+
+
+    and even if your .sh file does not run after the above, try to run it by:
+
+	bash <your .sh file>
+
+
+
+6 - To make Desktop icon smaller, open any folder, at the top menu bar go to Edit/Preferences and there you can change 'Icon View Defaults' by persentage.
+
+
+
+7 - To install putty:
+
+	sudo apt-get install putty
+
+    To paste something to putty terminal, use:
+ 
+	CTRL+Shift+Insert
+
+
+
+8 - To log out from user in terminal, type:
+
+	exit
+    or
+
+	CTRL+D
+
+
+
+10 - To connect to host 'npusl8.npu.edu' at port 22:
+
+	ssh amanbaya@npusl8.npu.edu -p 22
+
+
+
+11 - To download web site:
+
+	wget -r -p --no-parent http://www.tutorialspoint.com//hibernate/index.htm
+
+
+
+12 - To stop running process:
+
+	CTRL + c
+
+
+
+13 - To reload bashrc file after editing:
+
+	source ~/.bashrc
+	
+
+
+
+14 - To open terminal:
+
+	CTRL + ALT + T
+
+
+     and to create another tab in the same terminal window:
+
+	CTRL + Shift + T
+
+
+
+15 - To read first N lines from file in terminal:
+
+	head -n <N> <fileName>
+
+
+
+16 - To copy first N lines from one file into another in terminal:
+
+	head -q -n <N> <fileName> > <outFileName>
+
+
+
+17 - To countnumber of line in file:
+
+	wc -l <fileName>
+
+
+
+18 - To change date format appearance:
+ 
+     Right click on time in right bottom corner and slelect Configure.
+
+     There check "Use a custom date format" and change to:
+
+
+	%a %b %e, %H:%M
+
+
+     or
+
+
+	%a   %d-%b-%Y   %H:%M
+
+
+
+19 - To create dir:
+
+	mkdir <dirname>
+
+     To rename dir:
+
+	mv <dir_name> <new_dir_name>
+
+     To cut and paste file from location_1 to location_2:
+
+	mv <path + file_name> <path + dir_name>
+
+     Delete files with wildcards:
+
+	rm pig_*.log (e.g. will delete all files starting with pig_ and eending with .log)
+
+
+
+20 - To change the permission to certain file so that other user could modify it:
+
+     By default permessions of directories are set to 644 which means you cannot create file in the directory you are not the owner.
+
+	sudo chmod -R 777 <directory or filename>
+
+
+
+21 - To switch between tabs in terminal:
+
+	CTRL + PgDn
+
+
+
+22 - If error like: 'Some index files failed to download' while updating
+
+     Just open synaptic manager, install/reinstall ubuntu-extras-keyring and then (in terminal) type again:
+	sudo apt-get update.
+
+23 - In terminal, shell scripts should be xecuted by:
+	sh
+    and executables by:
+	./
+24 - To shutdown computer via terminal:
+	sudo init 0
+
+25 - If panel does not show up (because of system bugs), open the System settings > Startup applications and press the Add button. 
+     There, in first 2 blank spaces write:
+	gnome-panel
+     and in 3rd write anything (ex: panel) and save it. Then restart computer, panel should appear.
+
+     And if Menu button will dissappear/displace, right-click on empty space on panel, press 'Troubleshoot' and 'Restore all settings to default'.
+
+26 - Print list of files with enumeration:
+     1st way:
+	ls -1 | awk '{print NR,$0}'
+
+     2nd way:
+	ls -1 | cat -n
+
+27 - To start a script in background mode add & at the end of script starting:
+	Pyhton script example:
+		python demo.py &
+
+	for script to run even after logout, add nohup before script starting:
+		nohup python demo.py &
+
+	to get list of running python scripts:
+		ps -ef | grep python
+
+		which will give results like :
+		user      2430     1  0 Jul03 ?        00:00:01 /usr/bin/python -tt /usr/sbin/yum-updatesd
+
+		the second column is the pid. then use the kill command as such :
+		kill -9 2430   (i.e. the pid returned)
+
+28 - Get line from file that contains search value:
+	grep "your_value" <your_file>
+
+	Get all lines but the ones with search value:
+	grep -v "your_value" <your_file>
+	
+29 - Get file names that contain value:
+	grep -rl <search_value> <path with files>

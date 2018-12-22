@@ -1,0 +1,41 @@
+# 1
+To list all python packages installed:
+	pip list      # List installed packages, including editables
+	pip freeze    # Output installed packages in requirements format.
+
+# 2.1
+To install list of packages indicated in text file in requirements format:
+	pip install -r requirements.txt
+
+# 2.2
+To save all installed packages in requirements format text file:
+	pip list --local > <your path>/requirements.txt
+
+# 3
+To output all installed packages of active python environment in requirements format:
+	pip list --local
+
+# 4
+To install virtualenv package:
+	pip install virtualenv
+
+# 5
+To create new virtual environment:
+	virtualenv <my virtual environment name>  # just creates folder in active path with python
+	or
+	python3 -m venv /path/to/new/virtual/environment
+
+# 6.1 
+To activate new created virtual environment:
+	source /my_virtual_environment_name/bin/activate   # all new packages will be installed in new environment untill it is deactivated
+	or
+	go <my env>/Scripts in cmd and run activate.bat to activate
+	and run deactivate.bat to deactivate
+
+# 6.2 
+To deactivate:
+	deactivate  # when virtual environment is deactivated, it can be just deleted
+	or
+	go <my env>/Scripts in cmd and run deactivate.bat to deactivate
+
+# 7

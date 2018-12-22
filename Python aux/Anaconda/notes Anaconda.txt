@@ -1,0 +1,18 @@
+1 
+To install directly to anaconda:
+	conda install -c anaconda <package name>
+	conda install -c anaconda <package name>=<package version (optional)>
+
+2 
+If you get ERROR:
+-bash: /Users/altay.amanbay/anaconda/bin/conda: /opt/anaconda1anaconda2anaconda3/bin/python: bad interpreter: No such file or directory
+
+Then fix /Users/altay.amanbay/anaconda/bin/conda file. 
+Change #!/opt/anaconda1anaconda2anaconda3/bin/python to #!/Users/altay.amanbay/anaconda/bin/python
+
+3
+To change Jupyter's start-up folder:
+In cmd locate to desired location and start jupyter:
+	$ E:
+	$ jupyter notebook
+

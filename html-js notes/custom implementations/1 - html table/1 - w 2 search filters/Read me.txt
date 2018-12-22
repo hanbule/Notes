@@ -1,0 +1,27 @@
+Features:
+
+#1
+Html table with 2 types of search filters are implemented:
+1 - including-AND search  (searches/shows any string value that contains all search values)
+2 - including-OR search   (searches/shows any string value that contains at least one of search values)
+
+#2
+Table values (3rd column) are google-searchable on click.
+
+#3
+Datatable has 'TF Type' column (2nd column) that provides radio buttons for each row where one of two values (True, False) can be selected. 
+
+#4
+Each row has numbers and check box in order to keep a track of the row that you stopped on. Otherwise after scrolling table up and down many times, 
+you might forget on which row you stopped or checking.
+
+#5
+When you close the table or refresh the page, it will give pop-up warning window so that you do not close/refresh your page.
+
+#6
+The whole datatable can be downloaded as csv file with changed 'TF Type' column.
+
+
+
+Note:
+The downside of such regular html tables is that  when rows count increases the harder it will be for your browser to open it.

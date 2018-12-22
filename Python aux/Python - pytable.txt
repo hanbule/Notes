@@ -1,0 +1,108 @@
+==============================================================================================================================
+PyTables
+------------------------------------------------------------------------------------------------------------------------------
+
+# 1
+Create VLArray:
+    import tables as tb
+    import numpy as np
+
+    # 1
+    # open HDF5
+    hdf5_path = 'my_hdf5.hdf5'
+    node_name = 'dist_mtx'
+    title = "my short description"  # description
+    file_ = tb.open_file(hdf5_path, mode='w')
+    
+    # 2.1
+    # create vlarray
+    mtx = file_.create_vlarray(file_.root, 
+                                    node_name,                 # will use it when reading
+                                    tb.Float32Atom(shape=()),  # dtype of values stored (Int32Atom, Float32Atom) and shape of matrix. () means no shape as vlarray is extensible.
+                                    title,                     # just description
+                                    filters=tb.Filters(1)      # 1 is level of compression. 
+                                    )                            The allowed range is 0-9. A value of 0 (the default) 
+                                                                 disables compression. 
+                                                                 Read more about it.
+                                                                 https://www.pytables.org/_modules/tables/filters.html
+
+    # 2.2
+    # Append some (variable length) rows
+    mtx.append(np.array([5, 6]))
+    mtx.append(np.array([5, 6, 7]))
+    mtx.append([5, 6, 9, 8])
+
+    print 'Mtx shape:', mtx.shape
+    
+    # 3
+    # close HDF5
+    file_.close()
+    
+
+# 2
+Read VLArray:
+    import tables as tb
+
+    # open HDF5
+    hdf5_path = 'my_mtx.hdf5'
+    file_ = tb.open_file(hdf5_path, mode='r')
+
+    # 2.1
+    # read vlarray
+    my_mtx = file_.root.dist_mtx  # 'dist_mtx' is node name of data stored in hdf5
+    print my_mtx.shape
+
+    # 2.2
+    # read data, iterate rows
+    for idx, row in enumerate(dist_mtx):
+        if(idx < 5):
+            print row[:3]
+
+    # 3
+    # close HDF5
+    file_.close()
+    
+    
+    
+# 3.1
+Function to print VLArray:
+    import numpy as np
+ 
+    def print_vlarray(arr, precision = None):
+    	if precision is not None:
+        	np.set_printoptions(precision=precision)  # if values are long precision numbers
+
+    	for arr_row in arr:
+            print arr.nrow, arr_row
+	    # OR
+            # print arr.nrow, np.array_repr(arr_row).replace('\n', '')  # if array is large that causes line breaks when printing on console
+
+# 3.2
+Function to set cell value inplace in VLArray:
+
+    def set_value(arr, val, i, j):
+	arr[i] = list(arr[i][:j]) + [val] + list(arr[i][j+1:])
+
+# 3.3
+Function to get min value in VLArray:
+
+    def get_min_value(arr):
+        min_dist = 1000000
+        for idx, row in enumerate(arr):
+            if(min_dist > row.min()):
+                min_dist = row.min()
+        return min_dist
+
+# 3.4
+Function to get coordinates of min value in VLArray:
+    import numpy as np
+
+    def get_min_value_coordinates(arr):
+        min_dist = 1000000
+	coor_x, coor_y = 0, 0
+        for idx, row in enumerate(arr):
+            if(min_dist > row.min()):
+                min_dist = row.min()
+		coor_x, coor_y = idx, np.unravel_index(row.argmin(), row.shape)[0]
+        return coor_x, coor_y
+

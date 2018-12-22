@@ -1,0 +1,29 @@
+# 1
+-------------------------------------------------------------------------------------------------------------------------
+I had a project where I needed to create 173689x173689 numpy array.
+And my computer configs were:
+  CPU: Core-i7 with cores
+  RAM: 16gb
+  HDD: 1TB
+
+Results:
+1
+My computer could not handle it even closely. RAM could handle only ~10000x10000 matrix.
+Then tried to create out-of-core array using PyTables and could do it using VLArray structure in PyTables. And my 173689x173689 VLArray 
+took 112gb disk and timewise it around 15 hours to create such on-disk array by appending each row at a time.
+
+2
+Then tried to create my 173689x173689 array sing SQL tables. Started with Sqlite and it took 157gb on disk and ~3 days timewise.
+One thing to mention is that SQL tables do allow to create up to certain amount of columns in table, somewhere between 1000-1500 columns
+per table. So I just created 173 tables where each table had between 1000-1005 columns and then inserted arrays rows splitted between 
+each table (e.g. row of length 173689 splitted into 173 where 1st piece matches 1st table width, 2nd one matches width of 2nd table and so on).
+
+Simple COUNT operation to count rows of one table out of 173 took ~7mins.
+
+3
+Then I did quick comparison between Sqlite and Postgres. I created 10000x10000 matrix both in Sqlite and Postgres where
+it was 10 tables with 1000 columns each. It took the script 10mins to fill up the tables with float values for Sqlite 
+and 18mins for Postgres.
+
+4
+Then tried to create out-of-core array using HDF5. And my 173689x173689 numpy array in HDF5 took 112gb disk (same as VLArray size above) and timewise it around 20.5 hours.

@@ -1,0 +1,34 @@
+1 - To unfold all function:
+	Edit > Code folding > Unfold all
+	or 
+	Cmnd + 1
+	
+2
+Change font:
+Go to Prefrences-> Settings. Double window will open. On right side window add what needs to be set or changed.
+
+Laste added was:
+	"font_face": "Courier New",
+	"font_options": ["no_italic"]
+
+3.1
+Set new build system for python (e.g. code interpreter):
+
+Open sublime and got to:
+	Tool > Build System > New Build System.
+
+then paste the following and save with appropriate name by keeping extention ".sublime-build":
+	{
+	"path": "/home/username/anaconda/bin",
+	"cmd": ["python", "-u", "$file"],
+	"file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+	"selector": "source.python"
+	}
+
+then run the code using Ctrl+B. Make sure 'Tool > Build System' set to Automatic.
+
+3.2
+Remove the build system go to:
+	C:\Users\Altay\AppData\Roaming\Sublime Text 3\Packages\User
+
+	then pick the build system and delete it.

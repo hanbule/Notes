@@ -1,0 +1,101 @@
+==============================================================================================================================
+I/O
+------------------------------------------------------------------------------------------------------------------------------
+# 1
+Check if file exists:
+	import os.path
+	if(os.path.isfile(my_file_name)):
+
+# 2
+Open file for read:
+	infile = open(my_infile, 'r', encoding='utf-8-sig')
+	for row in infile:
+		...
+
+Open file for write:
+	outfile = open(my_outfile, 'w', encoding='utf-8-sig')
+	outfile.write(my_str)
+
+Access file with ignoring error:
+	import codecs
+	outfile = codecs.open(my_outfile, "r", encoding='utf-8-sig', errors='ignore')
+	for row in outfile:
+		...
+
+# 3
+CSV readers:
+	csv_reader = csv.reader(infile)
+	csv_reader = csv.DictReader(infile)
+
+	csv_writer = csv.writer(outfile)
+	csv_writer.writerow(values_ls)    # values should be in a list, or else each letter will be written in separate column
+
+# 4
+Formatted print:
+	print('%-10s' % 'apple','text')
+	print('%-10s' % 'appleboy','text')
+
+	output:
+	apple     text 
+	appleboy  text
+
+# 5
+Absolute dir the script is in:
+	script_dir = os.path.dirname(__file__) 
+	script_dir = os.path.dirname(os.path.abspath(__file__))  # might be better working
+  
+# 6
+Pickle dict:
+  import pickle
+  import dill   # need for pickling class objects
+  
+  my_dict = {}
+  storage_dir = 'my_dir_path/'
+	pickle_file = 'my_dict_1.pickle'
+	with open(storage_dir+pickle_file, 'wb') as outfile:
+		pickle.dump(my_dict, outfile, protocol=pickle.HIGHEST_PROTOCOL)
+
+NOTE:
+  There are currently 3 different protocols which can be used for pickling.
+
+  Protocol version 0 is the original ASCII protocol and is backwards compatible with earlier versions of Python.
+  Protocol version 1 is the old binary format which is also compatible with earlier versions of Python.
+  Protocol version 2 was introduced in Python 2.3. It provides much more efficient pickling of new-style classes.
+  
+  If a protocol is not specified, protocol 0 is used. If protocol is specified 
+  as a negative value or HIGHEST_PROTOCOL, the highest protocol version available will be used.
+  Stick with protocol version 2, especially if you are using custom classes derived from object (new-style classes). 
+  Which most modern code does, these days.
+
+# 5.2
+Load pickle:
+  storage_dir = 'my_dir_path/'
+	pickle_file = 'my_pickled_file.pickle'
+	with open(storage_dir+pickle_file, 'rb') as infile:
+		f = pickle.load(infile)
+
+# 7
+Reading cyrillic files:
+Add the following at the beginning of the python script as-is (preferably use python 2.7, might not work in python 3):
+	# -*- coding: utf-8 -*-
+	import sys
+	import locale
+	reload(sys)
+	sys.setdefaultencoding('utf-8')
+
+and then print the rows:
+	with codecs.open(my_infile_path, "r", encoding='cp1251', errors='ignore') as infile:
+		for row in infile:
+			print(str(row).encode('utf-8'))
+
+# 8
+Read file in chunk of lines:
+from itertools import islice
+
+read_n_lines = 4
+read_path = "..."
+with codecs.open(read_path, "r", encoding='utf-8', errors='ignore') as infile:
+	while True:
+		next_n_rows = list(islice(infile, read_n_lines))
+		if(not next_n_rows):
+			break

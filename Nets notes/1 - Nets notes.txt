@@ -1,0 +1,107 @@
+#1
+
+In LSTM for binary classification, you can have 2 outputs and then do a softmax over them or a single output with a sigmoid on top.
+
+Use 2 outputs + softmax if:
+
+Your classes are discrete. Example: Cats and dogs. (75% cat and 25% dog doesn't make sense. Its either cat or dog.)
+Use one output with sigmoid if:
+
+Your classes are continuous. Example: Binary sentiment analysis.
+
+#2
+I understand in this way ,please tell me if I'm wrong. If I have 1000 sentences ,each sentence has 10 words, and each word is presented in a 3-dim vector, so 1000 is nb_samples, 10 is the timesteps and 3 is the input_dim, am I right?
+yep
+
+Another question, if the shape of my data is 9000* 10 , 9000 is the nb_sample, and 10 is the input_dim, should I set the time step as 1? If so ,how could the LSTM find time information during training? Actually, I want to give every five 1*10 vectors a label, should I set the timesteps as 5 and reshape my data?
+yep, you have to reshape
+
+#3
+return_sequences=True for many-to-many LSTM.
+
+#4
+We should use stateful LSTMs when we deal with with time series or any other data where data points should keep their order because each data point depends on previous data point in terms of being predicted. batch_input_shape should be provided if LSTM is stateful.
+
+#5
+Questions and Answers:
+
+I’m given a big sequence (e.g. Time Series) and I split it into smaller sequences to construct my input matrix XX. Is it possible that the LSTM may find dependencies between the sequences? 
+No it’s not possible unless you go for the stateful LSTM. Most of the problems can be solved with stateless LSTM so if you go for the stateful mode, make sure you really need it. In stateless mode, long term memory does not mean that the LSTM will remember the content of the previous batches.
+
+Why do we make the difference between stateless and stateful LSTM in Keras? 
+A LSTM has cells and is therefore stateful by definition (not the same stateful meaning as used in Keras). Fabien Chollet gives this definition of statefulness: 
+stateful: Boolean (default False). If True, the last state for each sample at index i in a batch will be used as initial state for the sample of index i in the following batch. 
+
+Said differently, whenever you train or test your LSTM, you first have to build your input matrix XX of shape nb_samples, timesteps, input_dim where your batch size divides nb_samples. For instance, if nb_samples=1024 and batch_size=64, it means that your model will receive blocks of 64 samples, compute each output (whatever the number of timesteps is for every sample), average the gradients and propagate it to update the parameters vector. 
+
+By default, Keras shuffles (permutes) the samples in XX and the dependencies between XiXi and Xi+1Xi+1 are lost. Let’s assume there’s no shuffling in our explanation. 
+
+If the model is stateless, the cell states are reset at each sequence. With the stateful model, all the states are propagated to the next batch. It means that the state of the sample located at index ii, XiXi will be used in the computation of the sample Xi+bsXi+bs in the next batch, where bsbs is the batch size (no shuffling).
+
+Why do Keras require the batch size in stateful mode? 
+When the model is stateless, Keras allocates an array for the states of size output_dim (understand number of cells in your LSTM). At each sequence processing, this state array is reset. 
+
+In Stateful model, Keras must propagate the previous states for each sample across the batches. Referring to the explanation above, a sample at index ii in batch #1 (Xi+bsXi+bs) will know the states of the sample ii in batch #0 (XiXi). In this case, the structure to store the states is of the shape (batch_size, output_dim). This is the reason why you have to specify the batch size at the creation of the LSTM. If you don’t do so, Keras may raise an error to remind you: If a RNN is stateful, a complete input_shape must be provided (including batch size).
+
+#6 - about doc2vec
+Several things have been called Doc2Vec, but I'm specifically familiar with the implementation of Mikolov/Le's 'Paragraph Vectors' algorithm in Python gensim library that goes by that class name, so that's what I'm assuming you mean.
+Doc2Vec in purely unsupervised mode needs no labels other than an arbitrary unique ID per text example. It's fine (and indeed memory-optimal in the gensim implementation) to just use contiguous ints starting with 0 as your IDs.
+At the end of training – which will usually involve at least 10 passes over the training data – each text example will have a vector, and the cosine-similarity between these examples are likely to be a useful measure of similarity.
+Additionally, you can pass new text examples (already tokenized like the training examples) to the trained, frozen model (using the infer_vector() method) and it will infer a compatible vector, allowing similarity checks against the training set or all-new examples. (Notable and perhaps non-intuitive: sometimes it may make sense to re-infer vectors for all your training examples, based on the frozen model, rather than continuing to use the 'leftover' vectors from the original training.)
+Assuming some of your examples are labelled, you might then use those vectors as input to some other classification/learning process.
+But also, if you have other labels for your text examples, it can sometimes help to use them either in addition to or instead of the arbitrary text IDs, during bulk training. Then, in addition to winding up after training with a vector-per-example (by its ID), you can wind up with a vector-per-label. (The gensim Doc2Vec supports this by accepting more than one 'tag' per text, where the 'tag' is the int/string key to a learned-vector.)
+And also notable and perhaps non-intuitive: this sometimes seems to influence the resulting model/vectors to be more sensitive to the qualities implied by those added labels, and so downstream classifiers trained on the resulting per-text vectors may perform better.
+
+#6
+LSTM has 3 implementation modes:
+implementation: one of {0, 1, or 2}. If set to 0, the RNN will use an implementation that uses fewer, larger matrix products, thus running faster on CPU but consuming more memory. If set to 1, the RNN will use more matrix products, but smaller ones, thus running slower (may actually be faster on GPU) while consuming less memory. If set to 2 (LSTM/GRU only), the RNN will combine the input gate, the forget gate and the output gate into a single matrix, enabling more time-efficient parallelization on the GPU.
+
+#7
+down vote
+accepted
+I posted a similar question on the Keras Github page and got a good answer.
+
+lukedeo said that acc: 1.0000 means that both the true output and the predicted output are greater than 0.5 or vice versa. Instead, I should look at loss, or mse, to determine the accuracy of the model. This is because my network is a regression not a classifier/clusterer.
+
+Root mean squared error is a good measure of accuracy. accuracy_percent = 1 - np.sqrt(mse)
+
+fchollet (the Keras creator) elaborated by saying that "accuracy is not relevant at all for a regression problem."
+
+When doing a classification problem, accuracy can be made relevant by setting class_mode to 'categorical' or 'binary' in model.comple(...) depending on the target (network output).
+
+shareimprove this answer
+answered Sep 25 '15 at 18:25
+
+Ty Pavicich
+512414
+add a comment
+
+#8
+Checking Keras version:
+python -c "import keras; print(keras.__version__)"
+
+Mine is 1.2.2
+
+#9
+To change backend in Keras modify the following file:
+	~/.keras/keras.json
+
+	change value of backend to tensorflow or theano:
+
+	{
+	    "image_dim_ordering": "tf", 
+	    "epsilon": 1e-07, 
+	    "floatx": "float32", 
+	    "backend": "tensorflow"
+	}
+
+	Mine is theano.
+
+#10
+Use RepeatVector for Seq2Seq LSTM models.
+TimeDistributed layer applies the same indicated layer for each hidden output vector of LSTM. We can think of it as if each hidden output vector of each time step is input into single layer. Consequently, it means that the same weights are applied to each time step hidden vector.
+
+# 11
+Adding more conv layers increases the loss and decreases accuracy, Tensorflow (from stackoverflow)
+
+I've figured this out, why this is occurring,when we increase the number of neurons or layers randomly like 56, 86 then 496, then this sort of problem tend to occur, no matter how many layers you add, the result will be huge losses and very low accuracy, so solution to this problem is follow a particular pattern like 64,128,256,512.

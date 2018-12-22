@@ -1,0 +1,10 @@
+misc:
+# 1
+Main function declaration:
+	if __name__ == '__main__':
+
+# 2
+Check if value is NaN:
+	if(value!=value):
+  
+  

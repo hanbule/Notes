@@ -1,0 +1,13 @@
+# 1
+# iterate nested list
+
+def iter_netsed_list(ls):
+    for e in ls:
+        if isinstance(e, (list,tuple)):
+            for ee in flatten_list(e):
+                yield ee
+        else:
+            yield e
+
+def flatten_list(ls):
+    return list(iter_netsed_list(ls))

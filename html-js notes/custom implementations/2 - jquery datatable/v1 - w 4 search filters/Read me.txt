@@ -1,0 +1,31 @@
+Features:
+
+#1
+As the default search filter of datatables are doing only default including-AND search, 4 types of search filters are implemented:
+1 - including-AND search  (searches/shows any string value that contains all search values)
+2 - excluding-AND search  (hides any string value that contains all search values)
+3 - including-OR search   (searches/shows any string value that contains at least one of search values)
+4 - excluding-OR search   (hides any string value that contains at least one of search values)
+
+#2
+Table values are google-searchable on click.
+
+#3
+Datatable has 'TF Type' column that provides radio buttons for each row where one of two values (True, False) can be selected. 
+And 'TF Typeid' column values change according to checked/selected value in 'TF Type' column.
+
+#4
+Datatable config was set up so that it does not sort your data when it opens. But data entries can be sorted by clicking on column name.
+
+#5
+When you close the table or refresh the page, it will give pop-up warning window so that you do not close/refresh your page.
+
+#6
+The whole datatable can be downloaded as csv file where 'TF Type' column is not included purposely as a part of feature.
+
+
+
+Note:
+The best side of the datatables is that it can take large amount of rows and it will not overwhelm your browser while working, 
+as datatbles paginate your data and consequently will render/show  your data only certain rows count chunk at each page.
+By default it paginates the data by showing 10 rows per page which can be changed to 25, 50, 100.

@@ -1,0 +1,204 @@
+==============================================================================================================================
+Pandas
+------------------------------------------------------------------------------------------------------------------------------
+# 1.1
+Get all rows from dataframe that contain certain string:
+	df.loc[df.description.str.contains('my_substring'),:]   # returns dataframe
+	
+
+# 1.2
+Get certain parts of dataframe:
+
+Get certain rows from dataframe:
+	df.loc[(df.category_path=='condition string') & (df.description.str.contains('condition string 2')),:]   # returns dataframe
+	df[(df.category_path=='condition string') & (df.description.str.contains('condition string 2'))]         # returns dataframe
+	df.loc[df['category_path'].isin(['aaa','c']),:]
+	df.loc[df.category_path.isin(['aaa','c']),:]
+
+Get certain column:
+	df[['my_column_name']]
+
+Get certain columns by index:
+	df.ix[:,1]      # returns only 2nd column
+	df.ix[:,[0,1]]  # returns only 1st and 2nd columns
+	
+
+# 1.3
+Get certain count of rows from each group of values:
+	df.sample(frac=1).groupby('column_name', sort=False).head(100) # count of rows: 100
+
+
+# 1.4
+Get length of longest string value:
+	df['column_name'].map(lambda x: len(str(x).split())).max()
+
+
+# 1.5
+Get unique values from dataframe column:
+	option 1:
+	pandas.unique(df.loc[:,['my_column_name']].values)  #returns numpy.ndarray
+	
+	option 2:
+	df['my_column_name'].unique()
+
+
+# 1.6
+Get dataframe index and column name values:
+	df.index.values            # returns numpy.ndarray
+	df.index.values.tolist()   # returns list
+
+	df.columns.values            # returns numpy.ndarray
+	df.columns.values.tolist()   # returns list
+
+
+# 1.7
+Get rows where they have certain token count:
+	selected_indices = df['my_column_name'].apply(lambda x: len(str(x).split()) == 2)  # selects indices where token count is 2
+	df = df[selected_indices]
+
+
+# 1.8
+Get single value:
+	df.loc[df['column name 1']==column_name, 'column name 2'].tolist()[0]
+
+
+# 2.1
+To drop duplicates by certain columns:
+	df.drop_duplicates(['my_column_name'], inplace = True) 
+	df.drop_duplicates()     # drops by all columns, e.g. returns unique rows
+
+
+	Example dataframe:
+	A B C
+	1 2 3
+	1 2 3
+	1 2 4
+
+	df.drop_duplicates()
+	A B C
+	1 2 3
+	1 2 4
+
+	df.drop_duplicates(['A'])
+	A B C
+	1 2 3
+
+	df.drop_duplicates(['A', 'B'])
+	A B C
+	1 2 3
+
+	
+
+need to reindex after deduplication:
+	df.reset_index(drop=True, inplace=True)  
+
+# 2.2
+Drop rows where string is less than certain len:
+	df = df[df['my_column_name'].str.len() > 4]  # drop rows with string len less than 5
+
+# 2.3
+Drop certain column:
+	del df['my_column_name']  # option 1
+
+	df.drop(labels=['my_column_name'], axis=1, inplace=True)  # option 2
+
+# 3
+Group by count:
+	df["my_column_name"].value_counts() # returns unique values and their counts
+
+# 4
+Iterate throug dataframe rows:
+	for idx, row in df.iterrows():
+		print(idx)                      # index of the row
+		print(row)                      # entire row 
+		print(row['column name'])       # column cell value from row
+
+# 5
+Process row values:
+
+To apply a certain function to each cell value in certain row:
+	df['my_column_name'].apply(lambda x: my_function(x))   
+
+	# my_function will be applied to each cell value in my_column_name, where my_function will take cell value, process it and replace cell value by processed value.
+
+To lower case certain column values:
+	df['my_column_name'] = df.loc[:,'my_column_name'].str.lower()
+
+To replace multiple spaces to single space by regex:
+	import re
+	df['my_column_name'] = df['my_column_name'].apply(lambda x: re.sub(' +',' ',x))  
+
+To replace certain chars in strings to another:
+	df['my_column_name'] = df['my_column_name'].apply(lambda x: x.replace(' ','&')) 
+
+# 6
+Rename column names which are with semi-columns:
+	df.rename(columns={'my_column_name': 'new_column_name'}, inplace=True) # rename cpecific column
+	df.columns = ['my_column_name_1', 'my_column_name_2', ...]             # rename all columns in their order
+
+# 6.1
+Rename column names which are with semi-columns:
+	df.rename(columns={'\ufeff"my_column_name"': 'new_column_name'}, inplace=True)
+
+# 7
+Concat dataframes:
+	new_df = pd.concat([df_1, df_2], axis=0) # axis=0 means df_1 on top of df_2
+
+# 8
+Convert column to list:
+	df['my_column_name'].tolist()
+
+# 9
+Convert dict to pandas:
+	my_dict = {'ID':[1,2,3,4], 'Col_1':['a','b','c','d']}
+	df = pd.DataFrame(my_dict)
+
+# 10
+Convert row to dict:
+	df.loc[df.id=='condition'].to_dict('records')[0] 
+
+	Example dataframe:
+	A B C
+	1 2 3
+	1 2 3
+	1 2 4
+
+	df.loc[df.C==4].to_dict('records')[0] 
+	{'A': 1, 'B': 2, 'C':4}
+
+
+# 11
+Set col width for display:
+	pd.set_option('max_colwidth', 100)
+
+# 12
+Package for dataframe display:
+	from IPython.display import display, HTML	
+
+# 13
+Export/Import pickle:
+	pandas.read_pickle(pkl_file_name)
+	df.to_pickle(pkl_file_name)
+
+# 14
+Check if df is not empty:
+	if (not df.empty):
+
+# 15
+Iterate through csv by chunks:
+	chunk=18
+	for df in pd.read_csv(my_csv_file, iterator=True, chunksize=chunk, header=0):  # if header=0 then starts reading from 2nd row taking 1st row as header, 
+		display(df)																   # if header=None then starts reading from 1st row taking 1st row as data
+
+# 16
+Create empty dataframe:
+	columns_list = ['A', 'B']
+	df = pandas.DataFrame(columns=[columns_list])
+
+# 17
+Add row to dataframe:
+	df = df.append({'col_1': value_1, 'col_2': value_2}, ignore_index=True)
+
+# 18
+Sort dataframe:
+	df.sort_values(columns_ls, inplace = True)

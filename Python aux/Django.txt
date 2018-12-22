@@ -1,0 +1,56 @@
+# 1 
+Create Django project:
+	django-admin startproject <project name>
+
+# 2
+Start server:
+	python <project name>/manage.py runserver
+
+	127.0.0.1:8000
+
+
+pip install mysqlclient
+pip install MySQL-python
+
+
+
+Note:
+[1]
+When starting django project, it may give error asking following:
+	...
+	Did you install mysqlclient or MySQL-python?
+	(asking to install mysqlclient or MySQL-python)
+
+I installed mysqlclient, and before that installed mysql server first and added 
+export PATH="/usr/local/mysql/bin/:$PATH" to ~/.bash_profile.
+
+[2]
+Might need reset password:
+#1 in terminal run:
+	sudo mysqld_safe --skip-grant-tables
+
+#2 then open new terminal window start mysql:
+	mysql -u root
+
+#3 execute followings:
+	update mysql.user set authentication_string=password('moon') where user='root';
+	FLUSH PRIVILEGES;
+	quit
+   close both windows and open new.
+
+#4 now you can access mysql with new password:
+	mysql -u root -p 
+	<password>
+
+[3]
+Might need to set password timeout to never:
+	mysql -u root -p
+	<password>
+	SELECT user, host, password_last_changed, password_lifetime, password_expired FROM mysql.user WHERE user = 'root';
+	[might not allow to execute saying ALTER USER ..., just execute 'set password=pasword('moon');']
+	ALTER USER root@localhost PASSWORD EXPIRE NEVER;
+
+
+
+2017-07-03T00:36:06.605472Z 1 [Note] A temporary password is generated for root@localhost: B9aUiaYtrY.X
+If you lose this password, please consult the section How to Reset the Root Password in the MySQL reference manual.

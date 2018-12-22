@@ -1,0 +1,11 @@
+1 - Convert string to alphabetical and alphanumeric:
+	regexp_replace(lower(your_column_1), '[^a-z0-9]', '')  # converts column strings to lowercased alpahnumeric by substituting everything by blank except letters and numbers
+	regexp_replace(lower(your_column_1), '[^a-z]', '')
+
+2 - Join tables with wildcard
+	SELECT t1.column_1 FROM table_1 t1
+	LEFT JOIN table_2 t2
+	on t1.column_1 like t2.column_2 + '%'
+
+3 - Convert
+	cast(column_name as VARCHAR),

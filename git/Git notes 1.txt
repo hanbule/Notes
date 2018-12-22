@@ -1,0 +1,27 @@
+1 - Locate to Eclipse project folder in terminal.
+2 - Run command:
+	git init
+3 - Run command:
+	git remote add origin https://github.com/[username]/[reponame].git
+	// ex: git remote add origin https://github.com/altayaman/onlineshop_v1.git
+
+NOTE:
+    if you want to correct/change remote name after setting it in above step 3:
+	git remote set-url origin https://github.com/[otherUsername]/[otherReponame].git
+
+    To check if it changed:
+	git remote -v
+
+4 - Run command:
+	git add -A   # this adds all the files
+5 - Run command:
+	git commit -m "Initial commit"
+6 - 
+	git push origin master  // to specify that I meant the master branch of my repository
+
+NOTE:
+    If we use just 'GIT PUSH' command we have some warnings saying "Updates were rejected because the remote contains work ...", 
+    in that case run command:
+	git pull origin master  // to specify that I meant the master branch of my repository
+    and again run:
+	git push

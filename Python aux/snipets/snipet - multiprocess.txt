@@ -1,0 +1,27 @@
+import numpy as np
+import pandas as pd
+from multiprocessing import Pool, cpu_count
+from functools import partial
+
+def apply_func(arg1, arg2, arg3_data_partition):
+  ...
+
+if __name__=="__main__":
+  # set cores for process parallelization
+  cores = cpu_count()
+
+  # split dataframe
+  df_split = np.array_split(df, cores)
+  for idx, p in enumerate(df_split):
+    print "Part shape #%s:" % idx, p.shape
+
+  # apply apply_func() on each partition
+  pool = Pool(processes = cores)
+  partial_apply = partial(apply_func, arg1, arg2)
+  pool_results = pool.map(partial_apply, df_split)
+  pool.close()
+  pool.join()
+
+  # concatenate results
+  df_p = pd.concat(pool_results, axis=0)
+

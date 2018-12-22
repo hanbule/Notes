@@ -1,0 +1,32 @@
+==============================================================================================================================
+Dict
+------------------------------------------------------------------------------------------------------------------------------
+# 1
+Iterate through dict:
+	for k,v in word_index.items():
+
+# 2
+dict_ = defaultdict(lambda:0) # creates dict with default value 0
+for i in [1,2,3]:             # assigns keys where each has default value 0
+	dict_[i]
+
+# 3
+Sort dict by values:
+	d = { ... }
+	sorted_by_value = sorted(d.items(), key=lambda x: x[1])                # ascending
+	sorted_by_value = sorted(d.items(), key=lambda x: x[1], reverse=True)  # descending
+
+# 4
+delete from dict by key:
+	d = { ... }
+	d.pop(key_value)
+
+# 5
+ordered dict
+	from collections import OrderedDict
+	d = OrderedDict()
+
+# 6.1
+# Function 
+def get_dict_items_except_for_keys(dict, exclude_keys_ls):
+	return {k:v for k,v in dict.items() if(k not in exclude_keys_ls)}

@@ -1,0 +1,32 @@
+==============================================================================================================================
+Strings
+------------------------------------------------------------------------------------------------------------------------------
+# 1
+Figure out if substring:
+	'aa bbb' in 'aa bbb'
+	True
+
+# 2
+Lower case string:
+	'my_string'.lower()
+
+# 3
+Check if string contains only digits:
+	str.isdigit()
+
+# 4
+Returns true if all characters in the string are alphabetic and there is at least one character, false otherwise.
+	str.isalpha()
+This method returns true if all characters in the string are alphanumeric and there is at least one character, false otherwise.
+	str.isalnum()
+
+# 5
+Split string:
+	str.split()       # split by spaces
+	str.split(',')    # split by comma
+
+	import re
+	re.split(r"]|\[|{|}", str)  # split by multiple delimiter ],[,{ and }
+  
+  
+  

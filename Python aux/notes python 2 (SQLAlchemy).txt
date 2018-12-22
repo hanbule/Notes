@@ -1,0 +1,75 @@
+------------------------------------------------------------------------------------------------------------------------------
+SQLAlchemy
+------------------------------------------------------------------------------------------------------------------------------
+
+Notes:
+# 1
+Double-qoutes for string values in INSERT query statement for Postgres cause error, use single-qoutes instead.
+	Ex:
+	qry = """ INSERT INTO my_table (Name, Age) VALUES ("%s", %d);""" % ('Adam', 32)     # Wrong
+	qry = """ INSERT INTO my_table (Name, Age) VALUES (\'%s\', %d);""" % ('Adam', 32)   # Correct
+	conn.execute(text(qry))
+	OR
+	qry = """ INSERT INTO my_table (Name, Age) VALUES (:holder_1, %d);""" % (32)
+	d = { 'holder_1': 'Adam' }
+	conn.execute(qry, **d)
+
+# 2
+To get engine for MySQL, install mysql-connector-python-2.0.4 and use the following:
+url = ''.join(['mysql+mysqlconnector://', username_, ":", password_, "@", host_, ':',port_, '/', database_])
+
+# 3
+Use 'execute' for single query statement and 'executescript' for set of statements. 
+For instance, use 'executescript' with BEGIN; ... END;
+
+
+Code snippet:
+------------------------------------------------------------------------------------------------------------------------------
+# library
+from sqlalchemy import create_engine, text
+from sqlalchemy.engine.reflection import Inspector
+import pandas as pd
+
+# get DB engine with connection
+# ---------------------------------------------------------------------------------------------------------
+host_     = 'slice-dwh-poc.slicetest.com'
+database_ = 'sliceds'
+port_     = '5439'
+username_ = 'altay'
+password_ = 'P@s$w0rd!'
+
+# create connection engine
+# ---------------------------------------------------------------------------------------------------------
+url = ''.join(['postgresql://', username_, ":", password_, "@", host_, ':',port_, '/', database_])
+engine = create_engine(url)
+
+# check if table exists
+# ---------------------------------------------------------------------------------------------------------
+inspector = Inspector.from_engine(engine)
+if(schema_table_name.lower() in inspector.get_table_names()):
+	...
+
+
+# get data from db
+# ---------------------------------------------------------------------------------------------------------
+description_mod1_ = 'shampoo'
+qry_select = """
+    select count(DISTINCT t1.description_mod1) 
+    from infoprod.altay_to_portal_items_all t1
+    where t1.description_mod1 = '""" + description_mod1_ + """'
+
+df = pd.read_sql_query(qry_select, engine)
+
+# execute insert query
+# ---------------------------------------------------------------------------------------------------------
+conn = engine.connect()
+
+qry_insert = ...
+conn.execute(text(qry_insert))
+
+conn.close()
+
+# insert df into db
+# ---------------------------------------------------------------------------------------------------------
+df.to_sql(name=table_name, con=engine, chunksize=500, if_exists='append', index=False)
+

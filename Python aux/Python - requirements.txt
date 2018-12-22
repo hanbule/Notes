@@ -1,0 +1,17 @@
+==============================================================================================================================
+Requirements file
+------------------------------------------------------------------------------------------------------------------------------
+# 1
+To list all python packages installed:
+	pip list      # List installed packages, including editables
+	pip freeze    # Output installed packages in requirements format.
+
+# 2.1
+To install list of packages indicated in text file in requirements format:
+	pip install -r requirements.txt
+
+# 2.2
+To save all installed packages in requirements format text file:
+	pip list --local > <your path>/requirements.txt
+  
+  

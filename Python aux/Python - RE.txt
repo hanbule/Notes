@@ -1,0 +1,5 @@
+# 1
+# split string by multiple delimiters
+
+import re
+re.split(',|;|\\\\', str)    # split by , and ; and \\

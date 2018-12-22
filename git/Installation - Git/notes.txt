@@ -1,0 +1,14 @@
+1 - To clone(download) repository from github to your local repository:
+	git clone https://github.com/<username>/<rep_name>.git  // usually this https link can be copied from special github tab
+	// ex: git clone https://github.com/altayaman/onlineshop_v1.git
+
+2 - When we create a new repository on GitHub, wehave option to create README.md file, where md stands for markdown.
+    This README.md files content shows up below the project code everytime we open the project on GitHub. 
+    The styles and fonts in README.md can be manipulated just like in the IPython notebook markdown comments.
+
+3 - We can add branches to the master branch of GitHub repository and use them separately so that nobody touches it except you. 
+    And we can merge it to the master branch whenever we want.
+
+4 - One git repository should include only one project.
+
+5 - On GitHub you can use repositories for proects and gists for code snippets.

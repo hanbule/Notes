@@ -1,0 +1,12 @@
+# 1
+If gensim lib gives warning like follows:
+    UserWarning: detected Windows; aliasing chunkize to chunkize_serial warnings.warn("detected Windows; aliasing chunkize to chunkize_serial")
+then you can block it with code lines before importing gensim:
+    import warnings
+    warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
+    
+# 2
+For error such as:
+FutureWarning: Conversion of the second argument of issubdtype from `int` to `np.signedinteger` is deprecated. In future, it will be treated as `np.int32 == np.dtype(int).type`.
+    import warnings
+    warnings.simplefilter(action='ignore', category=FutureWarning)

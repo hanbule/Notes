@@ -1,0 +1,34 @@
+To put new stuff to new git repo:
+
+1 - Create a new repo on GitHub.
+2 - Clone the new repo to local computer in terminal.
+	git clone <project git url>
+3 - Copy and paste all your stuff (e.g. project or code) on your computer to locally cloned repo folder.
+3 - Locate to locally cloned repo in terminal.
+4 - Run command (adds all copied files as a new change): 
+		git add .
+5 - Run command (adds comment to new added changes):
+		git commit -m 'your comment here'
+6 - Run command (pushes all new changes to your remote repo):
+		git push origin master
+
+
+To delete commits history:
+
+1 - Clone the new repo to local computer in terminal.
+2 - Delete .git folder from downloaded (e.g. cloned) project.
+3 - Locate to locally cloned repo in terminal.
+4 - Run in terminal sequentilally:
+	git init
+	git remote add origin <project git url>
+	git add .
+	git commit -m 'your_commit_message'
+
+5 - Then force push update in terminal:
+	git push -f origin master
+
+
+
+
+
+	

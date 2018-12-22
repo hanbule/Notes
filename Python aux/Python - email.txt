@@ -1,0 +1,30 @@
+import sys
+import smtplib
+
+def send_msg(email_subject='N/A', email_body='N/A'):
+	mail = smtplib.SMTP('smtp.gmail.com',587)
+	mail.ehlo()
+	mail.starttls()
+
+	FROM  = 'altay.bank@gmail.com'
+	passw = < password of FROM email >
+	TO    = 'altay.bank@gmail.com'
+	mail.login(FROM, passw)
+
+	message = 'Subject: {}\n\n{}'.format(email_subject, email_body)
+	mail.sendmail(FROM, TO, message) 
+	mail.close()
+
+	print("Email sent")
+
+
+
+if __name__=="__main__":
+	# create subject and content to email
+	SBJ = 'My email subject'
+	MSG = 'My emial message'
+
+	# send email
+	send_msg(SBJ, MSG)
+
+	sys.exit(0)

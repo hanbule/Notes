@@ -1,0 +1,53 @@
+import sys
+import subprocess
+import smtplib
+import datetime
+
+def send_msg(email_subject='N/A', email_body='N/A'):
+	mail = smtplib.SMTP('smtp.gmail.com',587)
+	mail.ehlo()
+	mail.starttls()
+
+	FROM  = 'altay.bank@gmail.com'
+	passw = < password of FROM email >
+	TO    = 'altay.bank@gmail.com'
+	mail.login(FROM, passw)
+
+	message = 'Subject: {}\n\n{}'.format(email_subject, email_body)
+	mail.sendmail(FROM, TO, message) 
+	mail.close()
+
+	print("Email sent")
+
+
+
+if __name__=="__main__":
+	# 1 send email notification about START status
+	-----------------------------------------------------------------
+	code_name = 'My hdf5 experiment'
+	SBJ = 'Code execution STARTED, code name: %s' % code_name
+	MSG = 'Code execution STARTED on %s' % str(datetime.datetime.now())
+	send_msg(SBJ, MSG)
+
+	# 2 start code execution
+	-----------------------------------------------------------------
+	# cmd command (splitted by tokens)
+	cmd = ['python', '2.1 - Cluster word vecs v7.0.py']  # e.g. 'python test_task.py' in cmd
+	
+	# execute cmd command and get execution status code
+	return_code = subprocess.call(cmd)
+	print return_code
+
+	# 3 email notification about END status
+	-----------------------------------------------------------------
+	# create subject and content to email according to status code
+	if return_code == 0:
+		SBJ = 'Code execution status - SUCCESSFUL'
+		MSG = 'Code finished SUCCESSFULLY'
+	else:
+		SBJ = 'Code execution status - FAILED'
+		MSG = 'Code FAILED with code %d' % return_code
+
+	send_msg(SBJ, MSG)
+
+	sys.exit(0)

@@ -1,0 +1,18 @@
+1 - Getting string parts
+	select 
+		<column_name>, 
+		SUBSTRING_INDEX(<column_name>, ' ', 1) as first_token, 
+		SUBSTR(title from (INSTR(<column_name>, " ")+1)) as all_after_first_token
+	from <table_name>
+
+
+2 - Update with 2nd table values
+	UPDATE table_1 t1
+		LEFT JOIN table_2 t2
+		ON t1.column_1 = t2.column_1
+	SET t1.column_2 = t2.column_2, t1.column_3 = IF(t1.column_3 = <your_check_value>, NULL, t1.column_3)
+
+3 - Join tables with wildcard
+	SELECT t1.column_1 FROM table_1 t1
+	LEFT JOIN table_2 t2
+	on t1.column_1 like concat(t2.column_2,'%')

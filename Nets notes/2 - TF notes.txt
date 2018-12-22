@@ -1,0 +1,24 @@
+#1
+Q:
+I would like to slightly modify the hidden state calculated (and consequently re-inputed) at each time step of an LSTM. For example, something as simple as adding a constant vector to the hidden state that is produced by the regular LSTM process. I don't intend to modify the regular gate mechanics -- I view this more as a calculation of the final hidden state that is normally created by an LSTM. I feel creating my own LSTM cell is overdoing it. Alternatively, the OutputProjectionWrapper seems like it could achieve this goal, though I'm not intending to create a new output, just modify the hidden state.
+
+A:
+You can modify the state of the LSTM between time steps if you are using a for loop to process your sequences, since an RNN cell in TensorFlow takes two arguments: the new input and the hidden state:
+
+
+
+lstm = rnn_cell.BasicLSTMCell(lstm_size)
+
+initial_state = state = tf.zeros([batch_size, lstm.state_size])
+
+with tf.variable_scope("RNN"):
+  for time_step in range(num_steps):
+    if time_step > 0: tf.get_variable_scope().reuse_variables()
+
+    # modify the state
+    modified_state = state + 1
+
+    output, state = lstm(words[:, i], modified_state)
+
+
+final_state = state

@@ -1,0 +1,66 @@
+1 - scp -r /Users/altay.amanbay/Documents/demo.csv altay@rmory.slicetest.com:/home/altay/ElasticSearch
+    scp /Users/altay.amanbay/Documents/env\ -\ IPython/Keywords/Polygon\ -\ Apriori.ipynb altay@rmory.slicetest.com:/home/altay/IPython\env
+
+
+2 - To install python package locally on rmory server:
+	pip install <package/lib name> —-user
+   
+    then restart your Python notebook if running
+
+
+3 - To install java 8 locally on armory server:
+	1 - Download the java 8 tarball to your home directory (/home/altay) and extract
+
+	2 - Provide the following parameters in your .bashrc file to set the path to your new java 8:
+
+		export JAVA_HOME="/home/altay/java8/jdk1.8.0_112"
+		export PATH="/home/altay/java8/jdk1.8.0_112/bin:$PATH"
+
+	3 - Refresh .bashrc:
+		source .bashrc
+
+4 - To run ES from portable drive:
+	copy ES to portable drive and start as normally
+
+    Important note: 
+    The partition of portable drive where ES will be located should have the same system format of computer OS used.
+
+5 - To open terminal using screen:
+	ssh -t altay@172.30.9.207 screen -R
+
+	to detach:
+		CTRL+A+D 
+	to resume:
+		ssh -t altay@172.30.9.207 screen -R
+
+	to close screen:
+		exit
+
+6 - To search for string in all files in current directory and subdirectories:
+	grep -rl <your search string> .  # dot means current directory, -r mean -recursive for traversing subdirectories
+
+7.1 - To find only video files or python files in current folder via terminal:
+	find . -type f -iname '*.mp4' -or -iname '*.py'
+
+	. 		 tells to start searching in the current folder.
+	-type f  tells find only to look for files.
+	-iname 	 makes the search case insensitive.
+	-delete  tells find to delete/remove all files found.
+
+	- The above command works only in terminal, and below one works both in terminal and bash script.
+	find -E . -iregex ".*\.(mp4|py)$"
+
+	-E 			extended find.
+	-iregex		case insensitive regex
+	-regex		case sensitive regex
+
+7.2 - find and delete only video files or python files in current folder:
+	find . -type f -iname '*.mp4' -or -iname '*.py'	-delete
+
+7.3 - find files in current folder above 100MB:
+	find . -type f -size +100M
+
+
+scp -r /Users/altay.amanbay/Desktop/quora\ v1.1.py altay@rmory.slicetest.com:/home/altay/
+scp -r "altay@rmory.slicetest.com:/home/altay/IPython env/kgl/0.8588_lstm_245_118_0.32_0.24.csv" /Users/altay.amanbay/Desktop/
+scp -r 'altay@rmory.slicetest.com:/home/altay/0.8588_lstm_245_118_0.32_0.24.csv" /Users/altay.amanbay/Desktop/
