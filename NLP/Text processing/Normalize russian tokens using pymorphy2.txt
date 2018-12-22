@@ -1,0 +1,257 @@
+# 1
+# python 2 code gets russian words to their normal form using PyMorphy2
+# I used custom functions which removes leading and trailing punctuations from token before 
+# feeding it to PyMorphy
+# plus I used pandas to read csv file with cyrillic text for easy multiprocessing and memoization approach
+# that exponentially increased the speed of words normalizations process.
+
+# -*- coding: utf-8 -*-
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+'''
+python version: 2.7.15
+'''
+
+from os.path import isfile, isdir, exists, join, abspath, dirname
+import re
+import pandas as pd
+import numpy as np
+import csv
+import codecs
+import time
+from datetime import datetime
+import pymorphy2
+from string import punctuation
+from multiprocessing import Pool, Manager, cpu_count
+from functools import partial
+
+
+def get_elapsed_time(start_time):
+        elapsed_time = time.time()-start_time
+
+        days     = elapsed_time/(86400)   # 86400 sec = 24 hours
+        rem_time = elapsed_time%(86400)
+        str_ = time.strftime("%H:%M:%S", time.gmtime(rem_time))
+
+        return '%d days and %s' % (days, str_)
+
+def print_and_log(log_file, *values):
+	with open(log_file, 'a') as outfile:
+		outfile.write(' '.join([str(e) for e in values]) + '\n')
+	print(''.join([str(e) for e in values]))
+
+def normalize_sentence(sent, memo, in_out_):
+	if(sent!=sent):
+		return ''
+
+	tokens_split = sent.split(" ")
+	tokens_p = []
+
+	for token in tokens_split:
+		token_enc = str(token).decode('utf-8')
+		# token_enc = token
+		resp_dict = normalize_word( token_enc, memo, in_out_ )
+		normal = resp_dict['normal_form']
+		# print token, normal
+
+		tokens_p.append(normal)
+
+	sent_normal = ' '.join(tokens_p)
+	return str(sent_normal).encode('utf-8')
+
+# function that receives token from html page (e.g. "File translit - cyrillic2latin v5.html")  
+# normalizes it and sends it back to html page.
+def normalize_word(w, memo, in_out_):
+	# normalize word
+	if(contains_only_punc(w)):
+		# normal = w
+		normal = '' #' '*len(w)  # replace any punc mark with space except single dot
+		l_punc = w
+		t_punc = ''
+	else:
+		# get leading and trailing punctuations from token
+		l_punc = get_lead_punc(w)     # get leading punctuations
+		t_punc = get_trail_punc(w)    # get trailing punctuations
+
+		# clean token
+		# w = w.strip(punctuation)
+		w = w.lstrip(punctuation)     # remove leading punctuations
+		w = w.rstrip(punctuation)     # remove trailing punctuations
+
+		# get normal form of token v2 (uses memoization)
+		if(w in memo):
+			normal = memo[w]
+			in_out_['out'] += 1
+		else:
+			morph = pymorphy2.MorphAnalyzer()
+			p = morph.parse(w)[0]
+			normal = p.normal_form
+			memo[w] = normal
+			in_out_['in'] += 1
+
+		# keep single dot as it indicates end of sentecnce
+		if(t_punc == '.'):
+			normal += '.'
+		if(len(t_punc) > 1):
+			if(t_punc[-1] == '.' and t_punc[-2] != '.'):
+				normal += '.'
+		# normal = l_punc+p.normal_form+t_punc
+
+	# send back results
+	resp_dict = {'word': w, 'normal_form': normal, 'lead': l_punc, 'trail': t_punc}
+	# print(resp_dict)
+
+
+	# returnback results
+	return resp_dict
+
+def get_lead_punc(str_):
+	s, e = lead_punc_indeces(str_)
+	if(s is None):
+		return ''
+	else:
+		return str_[s:e+1]
+
+def get_trail_punc(str_):
+	s, e = trail_punc_indeces(str_)
+	if(s is None):
+		return ''
+	else:
+		return str_[s:e+1]
+
+def lead_punc_indeces(str_):
+	start = None
+	end = None
+	for idx, c in enumerate(str_):
+		if c in punctuation:
+			if(idx == 0):
+				start = 0
+				end = 0
+			else:
+				end = idx
+		else:
+			break
+	return start, end
+
+def trail_punc_indeces(str_):
+	start = None
+	end = None
+	for idx in range(len(str_)-1, -1, -1):
+		# print(str_[idx])
+		if str_[idx] in punctuation:
+			if(idx == len(str_)-1):
+				start = idx
+				end = idx
+			else:
+				end = idx
+		else:
+			break
+	return end, start
+
+def contains_only_punc(str_):
+	s1, e1 = lead_punc_indeces(str_)
+	s2, e2 = trail_punc_indeces(str_)
+
+	if(s1 is None and e1 is None):
+		return False
+	else:
+		return (s1, e1) == (s2, e2)
+
+def apply_func(i, curr_col, new_col, memo, in_out_, df):
+	df[new_col] = df[curr_col].apply(lambda x: normalize_sentence(x, memo, in_out_))
+	return df 
+
+
+
+if __name__=="__main__":
+	read_path  = '/'.join([storage_dir, file_name])	
+
+	# load dataset iteratively
+	start = time.time()
+	print '\nProcessing file ...'
+	print 'Processing started: ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '\n'
+
+	# Shared memos for processes
+	mng =  Manager()
+	tokens_memo = mng.dict()    # tokens memo for keeping normalized tokens 
+	in_out = mng.dict()         # memo for tracking counts of tokens memo usage
+	in_out['in'] = 0
+	in_out['out'] = 0
+
+	chunk = 10000
+	cols = ['tags','title','topic','url','text_wo_multispace']
+	chunk_reader = pd.read_csv(read_path, sep=',', iterator=True, chunksize=chunk, header=0, usecols=cols, encoding='utf-8')
+	for chunk_idx, df in enumerate(chunk_reader):   # if header=0 then starts reading from 2nd row taking 1st row as header, 
+		print '\t', '='*120
+		print '\tDataset chunk #', chunk_idx
+
+		# if(chunk_idx >= 1):
+		# 	break
+
+		# load dataset
+		# df = pd.read_csv(read_path, sep=';', nrows=100, usecols=['tags','title','topic','url','clean_text'])
+		print '\tDataset shape:', df.shape
+		print '\tDataset columns:', list(df.columns)
+		# df = df[['text']].loc[4:6]
+
+		# 2
+		# set cores for process parallelization
+		cores = cpu_count()
+		print '\n\tCores set:', cores
+		
+		# split dataset
+		df_split = np.array_split(df, cores)
+		for idx, p in enumerate(df_split):
+			print_and_log(log_path, '\tPartition #%d shape:' % (idx+1), p.shape) 
+
+
+		# start processing df in parallel
+		start_ = time.time()
+		print '\n\tProcessing file ...'
+		print '\tChunk processing started: ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '\n'
+		partial_apply = partial(apply_func, 1, 'text_wo_multispace', 'normal_text', tokens_memo, in_out)
+		pool = Pool(processes = cores)
+		pool_results = pool.map(partial_apply, df_split)
+		pool.close()
+		pool.join()
+
+		# concatenate results
+		df_p = pd.concat(pool_results, axis=0)
+
+
+		print '\n\tChunk processing fininshed ...'
+		print '\tFininsh time: ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '\n'
+		print '\tTime spent:', get_elapsed_time(start_)
+
+		# 3
+		# persist into csv
+		write_path  = '/'.join([storage_dir, file_name])
+
+		if(chunk_idx == 0):
+			mode_ = 'w'
+			header_ = True
+		else:
+			mode_ = 'a'
+			header_ = False
+
+		my_cols = df_p.columns
+		# my_cols = ['normal_text']
+		df_p[my_cols].to_csv(write_path, mode=mode_, index=False, header=header_, encoding='utf-8')
+		
+		print_and_log(log_path, '\tExported dataset columns:', list(my_cols), '\n')
+		
+		print '\tMemoization status:'
+		print '\tMemo size:', len(tokens_memo)
+		print '\tIn:', in_out['in'], '  Out:', in_out['out'], '\n'
+		print '\tEND: Dataset chunk #', chunk_idx, '\n'
+
+
+	print '\nProcessing fininshed ...'
+	print 'Fininsh time: ', datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '\n'
+	print 'Time spent:', get_elapsed_time(start)
+
+
+
+
