@@ -6,7 +6,7 @@ def send_msg(email_subject='N/A', email_body='N/A'):
 	mail.ehlo()
 	mail.starttls()
 
-	FROM  = 'altay.bank@gmail.com'
+	FROM  = 'altay.b...k@gmail.com'
 	passw = < password of FROM email >
 	TO    = 'altay.bank@gmail.com'
 	mail.login(FROM, passw)
