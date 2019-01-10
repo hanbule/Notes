@@ -86,7 +86,7 @@ Add the following at the beginning of the python script as-is (preferably use py
 and then print the rows:
 	with codecs.open(my_infile_path, "r", encoding='cp1251', errors='ignore') as infile:
 		for row in infile:
-			print(str(row).encode('utf-8'))
+			print row    # or if bad symbols  [print (str(row).encode('utf-8'))]
 
 # 8
 Read file in chunk of lines:
@@ -99,3 +99,38 @@ with codecs.open(read_path, "r", encoding='utf-8', errors='ignore') as infile:
 		next_n_rows = list(islice(infile, read_n_lines))
 		if(not next_n_rows):
 			break
+
+# 9
+Newline conversion in Python 3
+Post link: https://pythonconquerstheuniverse.wordpress.com/2011/05/08/newline-conversion-in-python-3/
+
+Posted on 2011/05/08 by Steve Ferg
+I use Python on both Windows and Unix.  Occasionally when running on Windows  I need to read in a file containing Windows newlines and write it out with Unix/Linux newlines.  And sometimes when running on Unix, I need to run the newline conversion in the other direction.
+
+Prior to Python 3, the accepted way to do this was to read data from the file in binary mode, convert the newline characters in the data, and then write the data out again in binary mode. The Tools/Scripts directory contained two scripts (crlf.py and lfcr.py) with illustrative examples. Here, for instance is the key code from crlf.py (Windows to Unix conversion)
+
+        data = open(filename, "rb").read()
+        newdata = data.replace("\r\n", "\n")
+        if newdata != data:
+            f = open(filename, "wb")
+            f.write(newdata)
+            f.close()
+But if you try to do that with Python 3+, it won’t work.
+
+The key to what will work is the new “newline” argument for the built-in file open() function. It is documented here.
+
+The key point from that documentation is this:
+
+newline controls how universal newlines works (it only applies to text mode). It can be None, '', '\n', '\r', and '\r\n'. It works as follows:
+
+On input, if newline is None, universal newlines mode is enabled. Lines in the input can end in '\n', '\r', or '\r\n', and these are translated into '\n' before being returned to the caller. If it is '', universal newline mode is enabled, but line endings are returned to the caller untranslated. If it has any of the other legal values, input lines are only terminated by the given string, and the line ending is returned to the caller untranslated.
+
+On output, if newline is None, any '\n' characters written are translated to the system default line separator, os.linesep. If newline is '', no translation takes place. If newline is any of the other legal values, any '\n' characters written are translated to the given string.
+
+So now when I want to convert a file from Windows-style newlines to Linux-style newlines, I do this:
+
+filename = "NameOfFileToBeConverted"
+fileContents = open(filename,"r").read()
+f = open(filename,"w", newline="\n")
+f.write(fileContents)
+f.close()
