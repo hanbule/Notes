@@ -194,9 +194,17 @@ OR
 	chunk=18
 	r = pd.read_csv(my_csv_file, iterator=True, chunksize=chunk, header=0)
 	
+	c = 0   # counter
 	df = next(r)
 	while not df.empty:
 		process(df)
+		
+		# header mode (i.e. tells to write header only once at the beginning)
+		h=False
+		if(c==0):
+			h=True
+		df.to_csv("file_name.csv", mode="a", index=False, sep=";", header=h)  # mode is 'append'
+
 		df = next(r)
 	
 
