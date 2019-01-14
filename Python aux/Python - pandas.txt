@@ -190,6 +190,16 @@ Iterate through csv by chunks:
 	for df in pd.read_csv(my_csv_file, iterator=True, chunksize=chunk, header=0):  # if header=0 then starts reading from 2nd row taking 1st row as header, 
 		display(df)																   # if header=None then starts reading from 1st row taking 1st row as data
 
+	OR
+	chunk=18
+	r = pd.read_csv(my_csv_file, iterator=True, chunksize=chunk, header=0)
+	
+	df = next(r)
+	while not df.empty:
+		process(df)
+		df = next(r)
+	
+
 # 16
 Create empty dataframe:
 	columns_list = ['A', 'B']
