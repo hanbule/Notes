@@ -21,7 +21,11 @@ Get certain column:
 Get certain columns by index:
 	df.ix[:,1]      # returns only 2nd column
 	df.ix[:,[0,1]]  # returns only 1st and 2nd columns
-	
+	df.ix[[0,1],:]
+
+Get rows where df index matches list of indexes:
+	indexes = [0,2,4,500]         # index of row 1,3,5,501
+	df.loc[df.index.isin(indexes)]
 
 # 1.3
 Get certain count of rows from each group of values:
