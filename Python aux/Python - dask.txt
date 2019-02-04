@@ -38,7 +38,7 @@
 	ddf = ddf.repartition(npartitions=30)
 
 # 4.2
-# Iterate partitions
+# Iterate partitions (should be wo shuffling)
 
 	for idx in range(ddf.npartitions):
 		partition = ddf.get_partition(idx)             # this is just delayed object, not df
@@ -78,7 +78,7 @@
 	
 	
 # 8
-# csv into sqlite snippet
+# csv into sqlite snippet (should be wo shuffling)
 
 	import sqlite3
 	
