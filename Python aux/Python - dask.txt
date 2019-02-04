@@ -35,14 +35,14 @@
 # 4
 # Change count of partitions
 
-    df = df.repartition(npartitions=30)
+	df = df.repartition(npartitions=30)
     
     
 # 5
 # Rename columns
 
-    print(df.columns)
-    df = df.rename(columns = {col1:new_col1, col2:new_col2} )
+	print(df.columns)
+	df = df.rename(columns = {col1:new_col1, col2:new_col2} )
     
     
 # 6.1
@@ -52,12 +52,21 @@
         that starts with zero. So while 1st pandas index starts with zero and ends with N 
         2nd pandas index does not continue as N+1, instead it starts with zero too as all the other chunks.
 
-    import dask.dataframe as dd
-    new_df = dd.merge(df1, df2, left_index=True, right_index=True)
+	import dask.dataframe as dd
+	new_df = dd.merge(df1, df2, left_index=True, right_index=True)
 
 
 # 6.2
 # Join dataframes on columns
 
-    import dask.dataframe as dd
-    new_df = dd.merge(df1, df2, left_on=df1_col, right_on=df2_col)
+	import dask.dataframe as dd
+	new_df = dd.merge(df1, df2, left_on=df1_col, right_on=df2_col)   # better df1_col and df2_col be unique-value columns
+    								         # or else joining will go cartesian way
+
+# 7
+# Create auto-increment id column
+	
+	df['id'] = 1
+	df['id'] = df.id.cumsum()
+	
+	
