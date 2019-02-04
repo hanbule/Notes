@@ -41,9 +41,7 @@
 # Iterate partitions
 
 	for idx in range(ddf.npartitions):
-		rows = len(ddf.get_partition(idx))
-		cols = len(ddf.get_partition(idx).columns)
-		print("Partition #%d shape: (%d %d)" % (idx, rows, cols) )
+		partition = ddf.get_partition(idx)
 
     
 # 5
