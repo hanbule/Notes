@@ -32,11 +32,19 @@
     print(df.npartitions)  # print count of partitions to know into how many files dataframe will be splitted
 
 
-# 4
+# 4.1
 # Change count of partitions
 
-	df = df.repartition(npartitions=30)
-    
+	ddf = ddf.repartition(npartitions=30)
+
+# 4.2
+# Iterate partitions
+
+	for idx in range(ddf.npartitions):
+		rows = len(ddf.get_partition(idx))
+		cols = len(ddf.get_partition(idx).columns)
+		print("Partition #%d shape: (%d %d)" % (idx, rows, cols) )
+
     
 # 5
 # Rename columns
