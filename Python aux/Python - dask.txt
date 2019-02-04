@@ -1,0 +1,63 @@
+# 1
+# read single csv file
+# Note: when dask loads file into dataframe, it partititons it into several chunks (i.e. several pandas dataframes)
+        consequently each pandas dataframe has own independent indexing that starts with zero.
+    
+    import dask.dataframe as dd
+    df = dd.read_csv("my_file.csv")
+	  print("DF shape: ", len(df), len(df.columns))
+
+
+# 2
+# read multiple(chunked) csv files
+# Ex:
+    my_file-00.csv
+    my_file-01.csv
+    my_file-02.csv
+
+    import dask.dataframe as dd
+    df = dd.read_csv("my_file-*.csv")
+	  print("DF shape: ", len(df), len(df.columns))
+    
+
+
+# 3
+# export dataframe to csv
+
+    import dask.dataframe as dd
+    df.to_csv("my_file-*.csv", index=False, columns=[...])   # by default, df is exported in chunks which is why * symbol in file name
+                                                             # so that each file (df chunk) will be named as my_file-*.csv
+                                                             # but with numeration instead of * symbol.
+                                                             
+    print(df.npartitions)  # print count of partitions to know into how many files dataframe will be splitted
+
+
+# 4
+# Change count of partitions
+
+    df = df.repartition(npartitions=30)
+    
+    
+# 5
+# Rename columns
+
+    print(df.columns)
+    df = df.rename(columns = {col1:new_col1, col2:new_col2} )
+    
+    
+# 6.1
+# Join dataframes on their index
+# Note: Joining on index works properly only when dataframes to be merged are loaded fully into memory.
+        That's because by default file is loaded into multiple pandas dataframes where each one has independent indexing
+        that starts with zero. So while 1st pandas index starts with zero and ends with N 
+        2nd pandas index does not continue as N+1, instead it starts with zero too as all the other chunks.
+
+    import dask.dataframe as dd
+    new_df = dd.merge(df1, df2, left_index=True, right_index=True)
+
+
+# 6.2
+# Join dataframes on columns
+
+    import dask.dataframe as dd
+    new_df = dd.merge(df1, df2, left_on=df1_col, right_on=df2_col)
