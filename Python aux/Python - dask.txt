@@ -41,7 +41,8 @@
 # Iterate partitions
 
 	for idx in range(ddf.npartitions):
-		partition = ddf.get_partition(idx)
+		partition = ddf.get_partition(idx)             # this is just delayed object, not df
+		partition = ddf.get_partition(idx).compute()   # this actual df that can be manipulated
 
     
 # 5
