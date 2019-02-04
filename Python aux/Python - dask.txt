@@ -77,3 +77,17 @@
 	df['id'] = df.id.cumsum()
 	
 	
+# 8
+# csv into sqlite snippet
+
+	import sqlite3
+	
+	sqlite_file = "path/to/db.sqlite"    # name of the sqlite database file
+	conn = sqlite3.connect(sqlite_file)
+	table_name = "..."
+
+	for idx in range(ddf.npartitions):
+		df = ddf.get_partition(idx).compute()   # get partition as pandas
+		print("Partition #%d shape: (%d %d)" % (idx, len(df), len(df.columns)) )
+
+		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
