@@ -1,0 +1,17 @@
+# 1
+# Fix unclosed tags
+
+    from scrapy.selector import Selector
+    from BeautifulSoup import BeautifulSoup
+    
+    soup = BeautifulSoup(response.body)
+    selector = Selector(text=soup.prettify())
+
+# 2
+# Get body from selector
+
+    body = selector.select("//body").extract()
+    
+# Get divs from body of selector
+
+     body_ls = selector.select("//body/div").extract()
