@@ -8,10 +8,11 @@
     selector = Selector(text=soup.prettify())
 
 # 2
+# Html code to selector
+    Selector(text=html_code)
+    
 # Get body from selector
-
     body = selector.select("//body").extract()
     
 # Get divs from body of selector
-
-     body_ls = selector.select("//body/div").extract()
+    body_ls = selector.select("//body/div").extract()
