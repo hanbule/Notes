@@ -28,5 +28,8 @@ Split string:
 	import re
 	re.split(r"]|\[|{|}", str)  # split by multiple delimiter ],[,{ and }
   
-  
+# 6
+Remove leading and trailing spaces:
+	str.lstript()
+	str.rstript()
   
