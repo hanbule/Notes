@@ -96,6 +96,23 @@ Examples:
 To scrape data from page, write scrapy spider code, save in .py file and run it in terminal:
     scrapy runspider my_spider_file.py
 
+and spider file should have spider class where one should provide: 
+- start_urls (list of starting point urls for spider)
+- parse() method that will be applied to each url mentioned in start_urls
+- allowed_domains
+
+Additionally one can provide extra callback function which could be used in parse().
+
+    import scrapy
+    class MySpider(scrapy.Spider):
+        name = 'my_news'    
+        allowed_domains = ['sports.kz']
+        start_urls = ["http://sports.kz/"+heading+"?page=%d" % page for page in range(1, (page_cnt+1))]  # pages, each with list of news
+
+        # method applied by spider to each of webpages mentioned in start_urls
+        def parse(self, response):
+            ...
+
 
 # 4.2
 Scrapy spider snippet:
