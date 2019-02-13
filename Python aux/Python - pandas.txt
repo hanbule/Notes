@@ -12,8 +12,8 @@ Get certain parts of dataframe:
 Get certain rows from dataframe:
 	df.loc[(df.category_path=='condition string') & (df.description.str.contains('condition string 2')),:]   # returns dataframe
 	df[(df.category_path=='condition string') & (df.description.str.contains('condition string 2'))]         # returns dataframe
-	df[~df.column.isin([val_1, val_2])]  # ~df.column.isin = not in
-	df[df.column.notnull()]              # rows where column has non-empty values
+	df.loc[:, ~df.columns.isin([val_1, val_2])]   # ~df.column.isin = not in
+	df[df.column.notnull()]                       # rows where column has non-empty values
 	
 	df.loc[df['category_path'].isin(['aaa','c']),:]
 	df.loc[df.category_path.isin(['aaa','c']),:]
