@@ -1,5 +1,9 @@
 # 1
-# split string by multiple delimiters
+# split string by multiple delimiters:
+  import re
+  re.split(',|;|\\\\', str)    # split by , and ; and \\
 
-import re
-re.split(',|;|\\\\', str)    # split by , and ; and \\
+# 2
+# replace multiple spaces to single space:
+	import re
+	my_str = re.sub(' +',' ', my_str)
