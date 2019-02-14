@@ -11,3 +11,12 @@ String to date
     DATE(string_date)  -- string_date should be in 'yyyy-mm-dd' format
     
 use SUBSTR and || to parse date from complex string that has date.
+
+
+# 4
+Create table
+
+	CREATE TABLE IF NOT EXISTS table_name (
+                                            id integer PRIMARY KEY,
+                                            surname TEXT,
+                                          )
