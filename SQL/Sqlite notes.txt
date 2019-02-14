@@ -1,0 +1,13 @@
+# 1
+Get substring
+    SUBSTR(string, start_index, count_of_symbols)
+
+# 2
+Join strings
+    string-1||string_2
+
+# 3
+String to date
+    DATE(string_date)  -- string_date should be in 'yyyy-mm-dd' format
+    
+use SUBSTR and || to parse date from complex string that has date.
