@@ -29,24 +29,40 @@ and now you can extract from selector_1 where all unclosed tags are fixed
 # 3
 # / and // in xpath
 
-short explanation:
-tag_1/tag_2 tells that tag_2 should be right next to tag_1.
-tag_1//tag_2 tells that tag_2 should be within the tag_1 and not necessarily be right next to tag_2.
+    short explanation:
+    tag_1/tag_2  tells that tag_2 should be right next to tag_1.
+    tag_1//tag_2 tells that tag_2 should be within the tag_1 and not necessarily be right next to tag_2.
 
 
+# 4.1
+# Get tags by attribute names in tags (i.e. class, id, href, title):
+    .xpath("/my_tag[@class = '<class name>']).extract()
+    .xpath("/my_tag[@id = '<id name>']).extract()
+    .xpath("/my_tag[@href = '<href name>']).extract()
+
+
+# 4.2
+# Get tags by attribute names in tags with common substring:
+    .xpath("/my_tag[contains(@class, '<class name>')]).extract()
+    .xpath("/my_tag[contains(@id, '<id name>')]).extract()
+    .xpath("/my_tag[contains(@href, '<href name>')]).extract()
+
+
+
+# 5
 Examples:
     <body>
         <tag_a>
             <tag_b>
-                <tag_d class='A'>
+                <tag_d class='Aa'>
                 </tag_d>
             </tag_b>
             <tag_c>
-                <tag_d class='A'>
+                <tag_d class='Aa'>
                 </tag_d>
             </tag_c>
             <tag_c>
-                <tag_d class='B'>
+                <tag_d class='B_Aa'>
                 </tag_d>
             </tag_c>
         </tag_a>
@@ -81,7 +97,7 @@ Examples:
         response.xpath("//tag_c").extract()
 
      Ex 4.2:
-     To get 1st or secor=nd <tag_c> tag:
+     To get 1st or 2nd <tag_c> tag:
         response.xpath("//body/tag_a/tag_c[1]").extract()
         response.xpath("//body/tag_a/tag_c[2]").extract()
         or
@@ -90,6 +106,21 @@ Examples:
         or
         response.xpath("//tag_c[1]").extract()
         response.xpath("//tag_c[2]").extract()
+
+     Ex 4.3:
+     To get 1st or 2nd <tag_d> tag:
+        response.xpath("//tag_d[1]").extract()
+        response.xpath("//tag_d[2]").extract()
+        
+        or get by class attributes
+        response.xpath("//tag_d[@class='Aa']").extract()   # returns list of 2 elements (i.e. <tag_d> tags)
+        
+     Ex 4.4:
+     To get all <tag_d> tag:
+        response.xpath("//tag_d").extract()
+        
+        or get by class attributes
+        response.xpath("//tag_d[contains(@class, 'Aa')]").extract()   # returns list of 2 elements (i.e. <tag_d> tags)
 
 
 # 4.1
