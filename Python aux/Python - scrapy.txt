@@ -127,6 +127,19 @@ Examples:
 To scrape data from page, write scrapy spider code, save in .py file and run it in terminal:
     scrapy runspider my_spider_file.py
 
+or you can run it in editor:
+    from scrapy.crawler import CrawlerProcess
+    
+    # spider class
+    class MySpider(scrapy.Spider):
+        ...
+    
+    if __name__=="__main__":
+        process = CrawlerProcess()
+        process.crawl(MySpider)   # MySpider is spider class
+        process.start()
+
+
 and spider file should have spider class where one should provide: 
 - start_urls (list of starting point urls for spider)
 - parse() method that will be applied to each url mentioned in start_urls
