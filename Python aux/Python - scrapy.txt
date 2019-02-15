@@ -35,7 +35,7 @@ and now you can extract from selector_1 where all unclosed tags are fixed
 
 
 # 4.1
-# Get tags by attribute names in tags (i.e. class, id, href, title):
+# Get specific tags by attribute names in tags (i.e. class, id, href, title):
     .xpath("/my_tag[@class = '<class name>']).extract()
     .xpath("/my_tag[@id = '<id name>']).extract()
     .xpath("/my_tag[@href = '<href name>']).extract()
@@ -47,6 +47,18 @@ and now you can extract from selector_1 where all unclosed tags are fixed
     .xpath("/my_tag[contains(@id, '<id name>')]).extract()
     .xpath("/my_tag[contains(@href, '<href name>')]).extract()
 
+
+# 4.3
+# Get tags by index from group of same tags, 
+# for example there can be list of <li> tags inside <ul> tag or list of <p> tags inside <div> tag.
+    .xpath("/p[1]).extract()                  # gets 1st <p> tag from all <p> tags
+    .xpath("/p[@class='desk'][1]).extract()   # gets 1st <p> tag from group of <p> tags with class name 'desk'
+    .xpath("/p[last()]).extract()             # gets last <p> tag from all <p> tags
+
+
+# 4.4
+# Get any tag with specific attribute using * wildcard:
+    .xpath("/*[@class=<class name>]).extract()
 
 
 # 5
