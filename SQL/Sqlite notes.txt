@@ -56,3 +56,57 @@ Ex 2:
     -- pandas analogy:
     -- df1['column_a'] = df1['neighbour_column'].apply(lambda x: x[1, 1+4])
 
+# 4
+Get row number (row number goes in accordance with row insertion order):
+    select rowid from my_table
+    select rowid, column_1 from my_table
+    
+# 5
+Joining:
+
+Ex 1:
+    my_table
+    col_a  col_b
+    a      aa
+    b      bb
+    c      cc
+    d      dd
+
+To get result where each value in 1st col_a has it's next value as neigbour :
+    col_a  col_a
+    a      b
+    b      c
+    c      d
+
+Query:
+    select t1.col_a, t2.col_a
+    from my_table t1 left join my_table t2 
+    on t1.rowid+1=t2.rowid
+    
+    or
+    select t1.col_a, t2.col_a
+    from my_table t1, my_table t2 
+    where t1.rowid+1=t2.rowid
+    
+    
+Ex 2:
+    my_table
+    col_a   col_b
+    a       aa
+    NULL    bb
+    c       cc
+    NULL    dd
+    NULL    ee
+
+To get result where each NULL is set to it's predecessor value:
+    col_a   col_b
+    a       aa
+    a       bb
+    c       cc
+    c       dd
+    c       ee
+
+Query:
+    UPDATE my_table
+    SET col_a = (select col_a from my_table t2 where my_table.rowid-1=t2.rowid and my_table.col_a is null)
+    WHERE EXISTS (select col_a from my_table t2 where my_table.rowid-1=t2.rowid and my_table.col_a is null)
