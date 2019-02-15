@@ -36,13 +36,23 @@ Create table
 Copy table into new table:
     CREATE TABLE new_table 
     AS select * from old_table
+    
+    -- pandas analogy:
+    -- df2 = df1
 
 # 3.3
 Copy values from existing column into new column:
-    ALTER TABLE table ADD COLUMN column column_type;
-    
-    UPDATE column SET column = neighbour_column;
-    UPDATE column SET column = substr(neighbour_column, 1,4);   --or copy just part of neighbour_column
+Ex 1:
+    ALTER TABLE table ADD COLUMN column_a column_type;
+    UPDATE column SET column_a = neighbour_column;
 
+    -- pandas analogy:
+    -- df1['column_a'] = df1['neighbour_column']
 
+Ex 2:
+    ALTER TABLE table ADD COLUMN column_a column_type;
+    UPDATE column SET column_a = substr(neighbour_column, 1,4);   --or copy just part of neighbour_column
+
+    -- pandas analogy:
+    -- df1['column_a'] = df1['neighbour_column'].apply(lambda x: x[1, 1+4])
 
