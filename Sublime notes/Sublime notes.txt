@@ -32,3 +32,11 @@ Remove the build system go to:
 	C:\Users\Altay\AppData\Roaming\Sublime Text 3\Packages\User
 
 	then pick the build system and delete it.
+
+4.1
+To make cursor appear at every line at the same time:
+	Ctrl+Shift+L  (Windows)
+	
+4.2
+When press Ctrl+F search field appears and when you type some string X, all found string Xs are highlighted.
+So to make cursor appear at each String X, press Alt+Enter after you typed string X in search bar.
