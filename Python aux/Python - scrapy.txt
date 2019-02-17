@@ -61,6 +61,11 @@ and now you can extract from selector_1 where all unclosed tags are fixed
     .xpath("/*[@class=<class name>]).extract()
 
 
+# 4.5
+# More xpath examples:
+    https://doc.scrapy.org/en/xpath-tutorial/topics/xpath-tutorial.html
+
+
 # 5
 Examples:
     <body>
