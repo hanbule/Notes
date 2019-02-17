@@ -1,0 +1,139 @@
+# 1
+# Note: Current code is written to use with python 2.7
+        To usewith python 3.x take off first 5 lines of code.
+
+
+# -*- coding: utf-8 -*-
+import sys
+import locale
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import scrapy
+from scrapy.http import Request, HtmlResponse
+from scrapy.selector import Selector
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+from scrapy.crawler import CrawlerProcess
+from lxml import etree
+from BeautifulSoup import BeautifulSoup
+import json
+import codecs
+import csv
+from collections import defaultdict, OrderedDict
+
+
+
+def travel_html(html_txt, x_path="*", depth=1, holder=None):
+	soup = BeautifulSoup(html_txt)
+	sel = Selector(text=soup.prettify())
+	ls = sel.xpath(x_path).extract()
+
+
+	# if recursion depth=1 (i.e. 1st step in recursion) 
+	if(depth==1):
+
+		# create 'holder' to store tag name, attribute names and values at each depth (i.e  at each recursion step)
+		holder = defaultdict(lambda: dict())
+		depth_num = "depth_%d" % depth
+		holder[depth_num]["tag_name"] = None
+		holder[depth_num]["attributes"] = OrderedDict()
+
+		if(len(ls)==1):
+			for e in ls:
+				# print e
+				x_p = "*"
+
+				# get tag name
+				tag_name = Selector(text=e).xpath(x_p).xpath("name()").extract()[0]
+				holder[depth_num]["tag_name"] = tag_name
+
+				# get attr values and names accordingly by index
+				attr_values = Selector(text=e).xpath(x_p).xpath("@*").extract()
+				if(len(attr_values) != 0):
+					for idx, attr_value in enumerate(attr_values):
+						attr_name = Selector(text=e).xpath(x_p).xpath("name(@*[%d])" % (idx+1)).extract()[0]
+						holder[depth_num]["attributes"][attr_name] = attr_value
+
+			# call recursion for next sibling node(s) (i.e for one depth lower in html)
+			ls = sel.xpath("*/*").extract()
+			for e in ls:
+				travel_2(e, x_path="*/*", depth=depth+1, holder=holder)
+
+	# if recursion depth >= 2
+	elif(depth>1):
+		# add next depth key to holder
+		depth_num = "depth_%d" % depth
+		depth_sub_tag = {}
+		depth_sub_tag["tag_name"] = None
+		depth_sub_tag["attributes"] = OrderedDict()
+
+		if(depth_num not in holder):
+			holder[depth_num] = []
+
+		if(len(ls)==1):
+			for e in ls:
+				# print e
+				x_p="*/*"
+
+				# get tag name
+				tag_name = Selector(text=e).xpath(x_p).xpath("name()").extract()[0]
+				depth_sub_tag["tag_name"] = tag_name
+
+				# get attr values and names accordingly by index
+				attr_values = Selector(text=e).xpath(x_p).xpath("@*").extract()
+				if(len(attr_values) != 0):
+					for idx, attr_value in enumerate(attr_values):
+						attr_name = Selector(text=e).xpath(x_p).xpath("name(@*[%d])" % (idx+1)).extract()[0]
+						depth_sub_tag["attributes"][attr_name] = attr_value
+
+				holder[depth_num].append(depth_sub_tag)
+				# print depth_sub_tag
+
+			# call recursion for next sibling node(s) (i.e for one depth lower in html)
+			ls = sel.xpath("*/*/*").extract()
+			for e in ls:
+				travel_2(e, x_path="*/*", depth=depth+1, holder=holder)
+
+	return holder
+
+
+
+if __name__=="__main__":
+
+	html_1 = """
+	<tag_A class='class_A' id="id_A">
+		<tag_B class='class_B'>
+			<tag_C class='class_C'>text C1</tag_C>
+			<tag_C class='class_C'>text C2</tag_C>
+			<tag_D class='class_D'>text D</tag_D>
+		</tag_B>
+	</tag_A>
+	"""
+
+	hld = travel_html(html_txt=html_1)
+	print hld
+
+	dep = "depth_4"
+	print len(hld[dep]), hld[dep]
+
+
+
+Result:
+  {
+    'depth_1': {'attributes': OrderedDict(), 'tag_name': u'body'}, 
+    'depth_2': [{'attributes': OrderedDict([(u'class', u'class_A'), (u'id', u'id_A')]), 'tag_name': u'tag_a'}], 
+    'depth_3': [{'attributes': OrderedDict([(u'class', u'class_B')]), 'tag_name': u'tag_b'}], 
+    'depth_4': [{'attributes': OrderedDict([(u'class', u'class_C')]), 'tag_name': u'tag_c'}, 
+                {'attributes': OrderedDict([(u'class', u'class_C')]), 'tag_name': u'tag_c'}, 
+                {'attributes': OrderedDict([(u'class', u'class_D')]), 'tag_name': u'tag_d'}]
+  }
+
+
+
+  3 
+  [
+    {'attributes': OrderedDict([(u'class', u'class_C')]), 'tag_name': u'tag_c'}, 
+    {'attributes': OrderedDict([(u'class', u'class_C')]), 'tag_name': u'tag_c'}, 
+    {'attributes': OrderedDict([(u'class', u'class_D')]), 'tag_name': u'tag_d'}
+  ]
