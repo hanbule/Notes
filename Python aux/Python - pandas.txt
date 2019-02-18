@@ -48,8 +48,13 @@ Get unique values from dataframe column:
 	option 2:
 	df['my_column_name'].unique()
 
-
 # 1.6
+Get count of unique values from dataframe column:
+	df['my_column_name'].nunique()
+
+
+
+# 1.7
 Get dataframe index and column name values:
 	df.index.values            # returns numpy.ndarray
 	df.index.values.tolist()   # returns list
@@ -58,13 +63,13 @@ Get dataframe index and column name values:
 	df.columns.values.tolist()   # returns list
 
 
-# 1.7
+# 1.8
 Get rows where they have certain token count:
 	selected_indices = df['my_column_name'].apply(lambda x: len(str(x).split()) == 2)  # selects indices where token count is 2
 	df = df[selected_indices]
 
 
-# 1.8
+# 1.9
 Get single value:
 	df.loc[df['column name 1']==column_name, 'column name 2'].tolist()[0]
 
