@@ -111,7 +111,12 @@ Drop certain column:
 
 # 3
 Groups and their counts:
-	df["my_column_name"].value_counts() # returns unique values and their counts
+	df["my_column_name"].value_counts() # returns series with unique values and their counts
+
+to iterate the stat rersults:
+	counts = df["my_column_name"].value_counts()
+	for val,occurence in zip(counts.index.tolist(), counts.values.tolist()):
+		print val, occurence
 
 # 4
 Iterate throug dataframe rows:
