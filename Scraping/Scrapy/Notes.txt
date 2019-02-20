@@ -206,7 +206,8 @@ page_cnt = 5
 article = OrderedDict()
 
 class NewsSpider(scrapy.Spider):
-    name = 'my_news'    
+    name = 'my_news'
+    download_delay = 3.0   # 3 sec
     allowed_domains = ['sports.kz']
     start_urls = ["http://sports.kz/"+heading+"?page=%d" % page for page in range(1, (page_cnt+1))]  # pages, each with list of news
 
