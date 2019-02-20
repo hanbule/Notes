@@ -1,0 +1,12 @@
+# 1
+# Most of websites has rules for scrapers and search engines, 
+# rules usually provided as robots.txt and to get it type the following pattern in search bar in browser:
+    <main url domain of the website> + / + robots.txt
+    
+# 2
+# Some websites provide list of urls to their archive content for scrapers:
+# to get it type the following pattern in search bar in browser:
+    <main url domain of the website> + / + <sitemap_xml_file>
+
+# <sitemap_xml_file> usually is sitemap_index.xml, 
+# if websites provide sitemapxml file, they indicate url for it in robots.txt
