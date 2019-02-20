@@ -1,0 +1,281 @@
+# 1
+# Fix unclosed tags
+
+    from scrapy.selector import Selector
+    from BeautifulSoup import BeautifulSoup
+    
+    soup = BeautifulSoup(response.body)
+    selector_1 = Selector(text=soup.prettify())
+    
+and now you can extract from selector_1 where all unclosed tags are fixed
+    
+    selector_1.xpath("...").extract()
+
+
+# 2
+# Html code to selector
+    Selector(text=html_code)
+
+
+# Get body from selector
+    body = selector.select("//body").extract()
+
+
+# Get divs from body of selector
+    body_ls = selector.select("//body/div").extract()  # select method might be deprecated
+    body_ls = selector.xpath("//body/div").extract()   # so try to use xpath instead
+
+
+# 3
+# / and // in xpath
+
+    short explanation:
+    tag_1/tag_2  tells that tag_2 should be right next to tag_1.
+    tag_1//tag_2 tells that tag_2 should be within the tag_1 and not necessarily be right next to tag_2.
+
+
+# 4.1
+# Get specific tags by attribute names in tags (i.e. class, id, href, title):
+    .xpath("/my_tag[@class = '<class name>']).extract()
+    .xpath("/my_tag[@id = '<id name>']).extract()
+    .xpath("/my_tag[@href = '<href name>']).extract()
+
+
+# 4.2
+# Get tags by attribute names in tags with common substring:
+    .xpath("/my_tag[contains(@class, '<class name>')]).extract()
+    .xpath("/my_tag[contains(@id, '<id name>')]).extract()
+    .xpath("/my_tag[contains(@href, '<href name>')]).extract()
+
+
+# 4.3
+# Get tags by index from group of same tags, 
+# for example there can be list of <li> tags inside <ul> tag or list of <p> tags inside <div> tag.
+    .xpath("/p[1]).extract()                  # gets 1st <p> tag from all <p> tags
+    .xpath("/p[@class='desk'][1]).extract()   # gets 1st <p> tag from group of <p> tags with class name 'desk'
+    .xpath("/p[last()]).extract()             # gets last <p> tag from all <p> tags
+
+
+# 4.4
+# Get any tag with specific attribute using * wildcard:
+    .xpath("/*[@class=<class name>]).extract()
+
+
+# 4.5
+# More xpath examples:
+    https://doc.scrapy.org/en/xpath-tutorial/topics/xpath-tutorial.html
+
+
+# 5
+Examples:
+    <body>
+        <tag_a>
+            <tag_b>
+                <tag_d class='Aa'>
+                </tag_d>
+            </tag_b>
+            <tag_c>
+                <tag_d class='Aa'>
+                </tag_d>
+            </tag_c>
+            <tag_c>
+                <tag_d class='B_Aa'>
+                </tag_d>
+            </tag_c>
+        </tag_a>
+    </body>
+
+    Ex 1:
+    To get everything from <body> tag:
+        response.xpath("//body").extract()
+
+    Ex 2:
+    To get everything from <tag> tag:
+        response.xpath("//body/tag_a").extract()
+        or
+        response.xpath("//tag_a").extract()
+
+    Ex 3:
+    To get <tag_b>:
+        response.xpath("//body/tag_a/tag_b").extract()
+        or
+        response.xpath("//body//tag_b").extract()
+        or
+        response.xpath("//tag_a/tag_b").extract()
+        or
+        response.xpath("//tag_b").extract()
+
+    Ex 4.1:
+    To get all <tag_c> tags:
+        response.xpath("//body/tag_a/tag_c").extract()
+        or
+        response.xpath("//body//tag_c").extract()
+        or
+        response.xpath("//tag_c").extract()
+
+     Ex 4.2:
+     To get 1st or 2nd <tag_c> tag:
+        response.xpath("//body/tag_a/tag_c[1]").extract()
+        response.xpath("//body/tag_a/tag_c[2]").extract()
+        or
+        response.xpath("//body//tag_c[1]").extract()
+        response.xpath("//body//tag_c[2]").extract()
+        or
+        response.xpath("//tag_c[1]").extract()
+        response.xpath("//tag_c[2]").extract()
+
+     Ex 4.3:
+     To get 1st or 2nd <tag_d> tag:
+        response.xpath("//tag_d[1]").extract()
+        response.xpath("//tag_d[2]").extract()
+        
+        or get by class attributes
+        response.xpath("//tag_d[@class='Aa']").extract()   # returns list of 2 elements (i.e. <tag_d> tags)
+        
+     Ex 4.4:
+     To get all <tag_d> tag:
+        response.xpath("//tag_d").extract()
+        
+        or get by class attributes
+        response.xpath("//tag_d[contains(@class, 'Aa')]").extract()   # returns list of 2 elements (i.e. <tag_d> tags)
+
+
+# 4.1
+To scrape data from page, write scrapy spider code, save in .py file and run it in terminal:
+    scrapy runspider my_spider_file.py
+
+or you can run it in editor:
+    from scrapy.crawler import CrawlerProcess
+    
+    # spider class
+    class MySpider(scrapy.Spider):
+        ...
+    
+    if __name__=="__main__":
+        process = CrawlerProcess()
+        process.crawl(MySpider)   # MySpider is spider class
+        process.start()
+
+
+and spider file should have spider class where one should provide: 
+- start_urls (list of starting point urls for spider)
+- parse() method that will be applied to each url mentioned in start_urls
+- allowed_domains
+
+Additionally one can provide extra callback function which could be used in parse().
+
+    import scrapy
+    class MySpider(scrapy.Spider):
+        name = 'my_news'    
+        allowed_domains = ['sports.kz']
+        start_urls = ["http://sports.kz/"+heading+"?page=%d" % page for page in range(1, (page_cnt+1))]  # pages, each with list of news
+
+        # method applied by spider to each of webpages mentioned in start_urls
+        def parse(self, response):
+            ...
+
+
+# 4.2
+Scrapy spider snippet:
+'''
+Python: 2.7
+Scrapy: 1.6.0
+'''
+
+# -*- coding: utf-8 -*-
+import sys
+import locale
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
+import scrapy
+from scrapy.http import Request, HtmlResponse
+from scrapy.selector import Selector
+from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
+from BeautifulSoup import BeautifulSoup
+import json
+from collections import defaultdict, OrderedDict
+
+
+# must-define params
+heading = "football"
+page_cnt = 5
+
+# global article meta-container
+article = OrderedDict()
+
+class NewsSpider(scrapy.Spider):
+    name = 'my_news'    
+    allowed_domains = ['sports.kz']
+    start_urls = ["http://sports.kz/"+heading+"?page=%d" % page for page in range(1, (page_cnt+1))]  # pages, each with list of news
+
+    # method applied by spider to each of webpages mentioned in start_urls
+    def parse(self, response):
+        # get article urls from page
+        for a_tag in response.xpath("//ul[@class='news_list_']/li/a[2]").extract():
+            article_url = Selector(text=a_tag).xpath("//a/@href").extract()
+
+            # just for testing purposes
+            with open("article_links.txt", "a") as outfile:
+                outfile.write("https://www.sports.kz" + article_url[0])
+                outfile.write("\n")
+
+            # then follow (open) each article url and apply parse_article() to that article page
+            yield response.follow("https://www.sports.kz" + article_url[0], callback=self.parse_article)
+
+    # dummy for testing
+    def parse_article_d(self, response):
+        pass
+
+    # my callback function that scrapes article details from article page
+    def parse_article(self, response):
+        # 1
+        # scrape data
+
+
+        # 1.1
+        article['topic']          = heading
+        # 1.2
+        tags_ls                   = response.xpath("//div[@class='c_left']//div[@class='news_read_bot']/ul/li/a/descendant::text()").extract()
+        article['tags']           = ",".join(tags_ls) if len(tags_ls)!=0 else ""
+        # 1.3
+        date_pub                  = response.xpath("//div[@class='c_left']//div[@class='news_main_ under_']//span[@class='datetype']/u/descendant::text()").extract()
+        article['date_pub']       = date_pub[0] if len(date_pub)!=0 else ""
+        # 1.4
+        # views                     = response.xpath("//div[@class='leftside']//div[@class='news-single']//div[@class='info']/div[@class='v']/descendant::text()").extract()
+        # article['views']          = views[0] if len(views)!=0 else ""
+        # 1.5
+        comments_count            = response.xpath("//div[@class='c_left']//div[@class='news_main_ under_']//div[@class='news_read_txt']/ul/a/li/span/text()").extract()
+        article['comments_count'] = comments_count[0] if len(comments_count)!=0 else ""
+
+
+        # 1.6
+        article['url']      = response.url
+        # 1.7
+        author              = response.xpath("//div[@class='c_left']//div[@class='news_main_ under_']//div[@class='copyavtor']/dt/div/span/a/descendant::text()").extract()
+        article['author']   = author[0] if len(author)!=0 else ""
+        # 1.8
+        title               = response.xpath("//div[@class='c_left']//div[@class='news_main_ under_']/h2/descendant::text()").extract()
+        article['title']    = " ".join(title) if len(title)!=0 else ""
+        
+        # 1.9
+        article['text']     = ""
+
+        text_parts = response.xpath("//div[@class='c_left']//div[@class='news_main_ under_']//div[@class='news_read_txt']/p")        
+        for t in text_parts:
+            # print t
+            if(len(t.xpath('text()').extract()) != 0):
+                article['text'] = article['text'] + " " + " ".join([e for e in t.xpath('descendant::text()').extract()])
+
+        # 2
+        # persist article details
+        with open("rk_news_"+heading+".json", 'ab') as f1:
+            json.dump(article, f1, ensure_ascii=False, indent=None)
+            f1.write(',\n')
+
+        # uncomment if you like to persist outputs using -o command in terminal
+        # yield article
+
+
+
