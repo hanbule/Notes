@@ -12,7 +12,7 @@
 '//div/form/parent::*'                                // all divs that have form
 './div/b'                                             // a relative path
 '//table[parent::div[@class="pad"] and not(@id)]//a'  // any anchor in a table without id, contained in a div of "pad" class
-'/html/body/div/*[preceding-sibling::h4]'             // give me whatever after h4
+'/html/body/div/*[preceding-sibling::h4]'             // return everything after h4 inside div
 '//tr/td[font[@class="head" and text()="TRACK"]]'     // all td that has font of a "head" class and text "TRACK"
 './table/tr[last()]'                                  // the last row of a table
 '//rdf:Seq/rdf:li/em:id'                              // using namespaces
