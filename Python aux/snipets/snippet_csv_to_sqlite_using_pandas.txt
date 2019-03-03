@@ -65,7 +65,7 @@ if __name__=="__main__":
 
 	# creat table
 	qry_create_table = """ CREATE TABLE IF NOT EXISTS %s (
-								id iBIGINT PRIMARY KEY,
+								id BIGINT PRIMARY KEY,
 								date_time text,
 								member_name text,
 								msg_text text,
