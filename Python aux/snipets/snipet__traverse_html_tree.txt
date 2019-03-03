@@ -1,6 +1,6 @@
 # 1
 # Note: Current code is written to use with python 2.7
-        To usewith python 3.x take off first 5 lines of code.
+        To use with python 3.x take off first 5 lines of code.
 
 
 # -*- coding: utf-8 -*-
