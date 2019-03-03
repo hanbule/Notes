@@ -65,7 +65,7 @@ if __name__=="__main__":
 
 	# creat table
 	qry_create_table = """ CREATE TABLE IF NOT EXISTS %s (
-								-- id integer PRIMARY KEY,
+								id iBIGINT PRIMARY KEY,
 								date_time text,
 								member_name text,
 								msg_text text,
@@ -80,7 +80,7 @@ if __name__=="__main__":
 	engine = create_engine('sqlite:///'+sqlite_file)
 
 	# insert df into sqlite db
-	df.to_sql(name=table_name, con=engine, chunksize=500, if_exists='append', index=False)
+	df.to_sql(name=table_name, con=engine, chunksize=500, if_exists='append', index=True, index_label='id')  # index=True makes df index insert as column, index_label='id' makes df index labeled as 'id' during data insertion
 
 
 
