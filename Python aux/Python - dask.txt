@@ -123,7 +123,7 @@
 	
 	
 # 11
-# Store dask array in hdf5
+# Store dask array in hdf5:
 	import dask.array as da
 	import h5py
 	
@@ -132,6 +132,6 @@
 
 	f = h5py.File('myfile.hdf5')
 	d = f.require_dataset('/data', shape=darr.shape, dtype=darr.dtype)
-	da.store(darr, d)
+	da.store(darr, d)   # Reminder: myfile.hdf5 might be way larger than source csv file.
 	
 	
