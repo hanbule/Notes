@@ -111,5 +111,27 @@
 	ddf['new_col'] = ddf.map_partitions(lambda df : df.apply(lambda x : x['some_col'], axis=1))  # as dask df consists of dataframes
 
 	
+# 10
+# dask df to dask array
+	d_arr = ddf.to_dask_array()
+	print(darr.shape)   # Output: (None, 25)
+	print(darr.dtype)   # Output: int64
+	
+	d_arr = ddf.to_dask_array(lengths=True)
+	print(darr.shape)   # Output: (10, 25)
+	print(darr.dtype)   # Output: int64
+	
+	
+# 11
+# Store dask array in hdf5
+	import dask.array as da
+	import h5py
+	
+	# from df to array
+	darr = ddf.to_dask_array(lengths=True)
+
+	f = h5py.File('myfile.hdf5')
+	d = f.require_dataset('/data', shape=darr.shape, dtype=darr.dtype)
+	da.store(darr, d)
 	
 	
