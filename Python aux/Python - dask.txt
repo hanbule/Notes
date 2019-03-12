@@ -21,8 +21,8 @@
     
 
 
-# 3
-# export dataframe to csv
+# 3.1
+# export dask dataframe to csv:
 
     import dask.dataframe as dd
     df.to_csv("my_file-*.csv", index=False, columns=[...])   # by default, df is exported in chunks which is why * symbol in file name
@@ -31,6 +31,17 @@
                                                              
     print(df.npartitions)  # print count of partitions to know into how many files dataframe will be splitted
 
+3.2
+# export dask dataframe as one single file (workaround):
+	ls = ddf.to_delayed()
+	for idx, p in enumerate(ls):
+		df = p.compute()
+		print("DF shape: ", len(df), len(df.columns))
+
+		h = False
+		if(idx == 0):
+			h = True
+		df.to_csv('my_file.csv', mode='a', index=False, header=h)
 
 # 4.1
 # Change count of partitions
