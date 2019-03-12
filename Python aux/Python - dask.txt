@@ -132,6 +132,6 @@
 
 	f = h5py.File('myfile.hdf5')
 	d = f.require_dataset('/data', shape=darr.shape, dtype=darr.dtype)
-	da.store(darr, d)   # Reminder: myfile.hdf5 might be way larger than source csv file.
+	da.store(darr, d)   # Reminder: myfile.hdf5 might be way larger than source csv file. Ex: 12.6gb csv -> 50.4gb hdf5
 	
 	
