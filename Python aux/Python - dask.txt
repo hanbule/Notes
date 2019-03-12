@@ -91,3 +91,11 @@
 		print("Partition #%d shape: (%d %d)" % (idx, len(df), len(df.columns)) )
 
 		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
+
+# 9
+# apply() func
+	ddf['new_col'] = ddf.map_partitions(lambda df : df.apply(lambda x : x['some_col'], axis=1))  # as dask df consists of dataframes
+
+	
+	
+	
