@@ -16,8 +16,11 @@
     my_file-02.csv
 
     import dask.dataframe as dd
-    df = dd.read_csv("my_file-*.csv")
-	  print("DF shape: ", len(df), len(df.columns))
+    df = dd.read_csv("my_file-*.csv", blocksize=10e6)  # blocksize set to 10mb, so each partition size is 10mb. Default 64mb.
+                                                       # In Dask v1.1.3, blocksize can be a number like 64000000 
+						       # or a string like "64MB", "1GB"
+                                                       # If set to None, each csv file will be a separate single partition.
+    print("DF shape: ", len(df), len(df.columns))
     
 
 
