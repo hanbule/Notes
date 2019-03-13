@@ -148,3 +148,24 @@ Read array from hdf5:
 	    print(d)
 	    print(type(data))
 	    print(data.shape)
+
+# 12
+# Make changes in stored dask array:
+	import dask.array as da
+	import h5py
+
+	if __name__=="__main__":
+	    # read array
+	    f = h5py.File('myfile.hdf5')
+	    d = f['/data']
+	    darr = da.from_array(d, chunks=(1000,1000))
+	    print(darr.shape)
+
+	    # make changes
+	    data = data + 1
+
+	    # view changes of array part
+	    print(darr[:30, :30].compute())    # view first 30 rows and first 30 columns
+
+	    # save edited array back
+	    da.store(darr, d)  # as the array is stored in hdf5, saving back back will be amazingly fast
