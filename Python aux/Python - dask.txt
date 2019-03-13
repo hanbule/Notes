@@ -111,7 +111,7 @@
 	ddf['new_col'] = ddf.map_partitions(lambda df : df.apply(lambda x : x['some_col'], axis=1))  # as dask df consists of dataframes
 
 	
-# 10
+# 10.1
 # Convert dask df to dask array:
 	d_arr = ddf.to_dask_array()
 	print(darr.shape)   # Output: (None, 25)
@@ -121,7 +121,12 @@
 	print(darr.shape)   # Output: (10, 25)
 	print(darr.dtype)   # Output: int64
 	
-	
+
+# 10.2
+# Convert dask array to dask df:
+	import dask.dataframe as dd
+	ddf = dd.from_dask_array(darr)  #  ddf will use auto-incrementing numbers as column names
+
 # 11.1
 # Store dask array in hdf5:
 	import dask.array as da
