@@ -139,6 +139,7 @@
 	d = f.require_dataset('/data', shape=darr.shape, dtype=darr.dtype)
 	da.store(darr, d)   # Reminder: myfile.hdf5 might be way larger than source csv file. Ex: 12.6gb csv -> 50.4gb hdf5
 	
+	f.close()
 	
 # 11.2
 Read array from hdf5:
@@ -153,6 +154,8 @@ Read array from hdf5:
 	    print(d)
 	    print(type(data))
 	    print(data.shape)
+	    
+	    f.close()
 
 # 12
 # Make changes in stored dask array:
@@ -174,3 +177,5 @@ Read array from hdf5:
 
 	    # save edited array back
 	    da.store(darr, d)  # as the array is stored in hdf5, saving back back will be amazingly fast
+	    
+	    f.close()
