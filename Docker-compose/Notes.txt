@@ -1,0 +1,15 @@
+1
+Check version:
+    docker-compose --version
+	
+    Output: 
+    docker-compose version 1.22.0, build f46880fe
+
+2.1
+To run docker-compose, go to folder with Dockerfile file and docker-compose file and run:
+    sudo docker-compose up
+
+2.2
+To stop docker-compose running in background, go to folder with Dockerfile file and docker-compose file where you started docker-compose and run:
+    sudo docker-compose stop
+
