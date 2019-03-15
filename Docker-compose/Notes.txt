@@ -9,6 +9,16 @@ Check version:
 To run docker-compose, go to folder with Dockerfile file and docker-compose file and run:
     sudo docker-compose up
 
+Note:
+    And if you get error smth like:
+        iptables: No chain/target/match error (with docker network create)	
+    Run:
+        systemctl restart docker
+    That's because maybe something has deleted the docker iptables entries. 
+    Docker will recreate them if you restart it (systemctl restart docker).
+    You'll want to disable anything else that manages iptables to prevent this from happening in the future.
+
+
 2.2
 To stop docker-compose running in background, go to folder with Dockerfile file and docker-compose file where you started docker-compose and run:
     sudo docker-compose stop   # command will stop your containers, but it won’t remove them.
