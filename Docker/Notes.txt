@@ -27,6 +27,18 @@ Remove image:
 To check docker info:
 	sudo docker info
 
-5
+5.1
 Check if docker is active: 
 	systemctl is-active docker
+
+5.2
+Check docker status:
+	systemctl status docker
+	or
+	service status docker
+	
+6
+Start/stop docker:
+	systemctl start/stop docker
+	or
+	service start/stop docker
