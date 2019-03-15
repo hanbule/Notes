@@ -1,0 +1,63 @@
+1 
+CSV into Sqlite: (should be wo shuffling)
+
+	import sqlite3
+	
+	sqlite_file = "path/to/db.sqlite"    # name of the sqlite database file
+	conn = sqlite3.connect(sqlite_file)
+	table_name = "..."
+
+	for idx in range(ddf.npartitions):
+		df = ddf.get_partition(idx).compute()   # get partition as pandas
+		print("Partition #%d shape: (%d %d)" % (idx, len(df), len(df.columns)) )
+
+		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
+    
+2
+Create empty HDF5 array and append new arrays:
+
+  import dask.array as da
+  import h5py
+  import numpy as np
+  import sys
+
+
+  if __name__=="__main__":
+    vec_len = 10000
+
+    # 1
+    # create empty dataset
+    f = h5py.File('myfile.hdf5')
+    d = f.create_dataset('/data', shape=(0, vec_len), dtype='float')
+    print('New empty dataset:', d[...].shape)
+    f.close()
+
+
+    # 2
+    # append new array (new rows)
+
+    # open file
+    f = h5py.File('myfile.hdf5')
+    d = f['/data']
+    print('Existing shape:', d[...].shape)
+
+    # new array
+    new_arr = np.random.rand(100, vec_len)
+    new_darr = da.from_array(new_arr, chunks=shape)
+
+    # append new array
+    x = da.concatenate([d[...], new_darr], axis=0)
+    del f['/data']
+    d = f.create_dataset('/data', data=x)
+    
+    f.close()
+
+    # 3
+    # print new shape
+    f = h5py.File('myfile.hdf5')
+    d = f['/data']
+    darr = da.from_array(d, chunks=shape)
+    print('\nNew dataset', darr.shape)
+
+
+
