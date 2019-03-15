@@ -1,0 +1,29 @@
+Containers:
+# 1
+# List containers:
+      docker ps -a
+
+# List container IDs:
+      docker ps -aq
+
+# 2
+# Remove containes:
+      docker rm <container ID>
+
+
+Images:
+# 1
+# List images:
+		  docker images
+
+# List images:
+		  docker images -q
+
+# 2
+# Remove image:
+		  docker rmi <image ID>
+
+
+# 3
+# To check docker info:
+	    sudo docker info
