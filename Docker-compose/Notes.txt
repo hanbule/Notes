@@ -11,7 +11,8 @@ To run docker-compose, go to folder with Dockerfile file and docker-compose file
 
 2.2
 To stop docker-compose running in background, go to folder with Dockerfile file and docker-compose file where you started docker-compose and run:
-    sudo docker-compose stop
+    sudo docker-compose stop   # command will stop your containers, but it won’t remove them.
     or 
-    sudo docker-compose down
+    sudo docker-compose down   # command will stop your containers, but it also removes the stopped containers 
+    								    as well as any networks that were created.
 
