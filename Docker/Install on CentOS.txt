@@ -1,0 +1,38 @@
+1
+Update OS:
+    sudo yum update
+
+2
+Install docker:
+    sudo yum install docker
+
+3
+Start docker:
+    sudo systemctl start docker
+
+4
+Check docker status:
+    sudo systemctl status docker
+
+in Active section should be 'active (running)'
+
+5
+To make docker start when system boots:
+    sudo systemctl enable docker
+
+and to disable it:
+    sudo systemctl disable docker
+
+
+
+
+Note: 
+    current installation steps were made on CentOS 7 
+    Full OS version details: centos-release-7-5.1804.4.el7.centos.x86_64.
+
+    command steps were taken from video:
+    https://www.youtube.com/watch?v=q8i84iF6-Gk
+
+reference commands:
+    To check OS version:
+        rpm -q centos-release
