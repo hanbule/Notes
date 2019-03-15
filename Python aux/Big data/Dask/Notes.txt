@@ -1,5 +1,5 @@
 # 1
-# read single csv file
+# Read single csv file
 # Note: when dask loads file into dataframe, it partititons it into several chunks (i.e. several pandas dataframes)
         consequently each pandas dataframe has own independent indexing that starts with zero.
     
@@ -9,7 +9,7 @@
 
 
 # 2
-# read multiple(chunked) csv files
+# Read multiple(chunked) csv files
 # Ex:
     my_file-00.csv
     my_file-01.csv
@@ -25,7 +25,7 @@
 
 
 # 3.1
-# export dask dataframe to csv:
+# Export dask dataframe to csv:
 
     import dask.dataframe as dd
     df.to_csv("my_file-*.csv", index=False, columns=[...])   # by default, df is exported in chunks which is why * symbol in file name
@@ -35,7 +35,7 @@
     print(df.npartitions)  # print count of partitions to know into how many files dataframe will be splitted
 
 3.2
-# export dask dataframe as one single file (workaround):
+# Export dask dataframe as one single file (workaround):
 	ls = ddf.to_delayed()
 	for idx, p in enumerate(ls):
 		df = p.compute()
@@ -92,7 +92,7 @@
 	
 	
 # 8
-# csv into sqlite snippet (should be wo shuffling)
+# Csv into sqlite snippet (should be wo shuffling)
 
 	import sqlite3
 	
@@ -107,7 +107,7 @@
 		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
 
 # 9
-# apply() func
+# apply() func:
 	ddf['new_col'] = ddf.map_partitions(lambda df : df.apply(lambda x : x['some_col'], axis=1))  # as dask df consists of dataframes
 
 	
@@ -170,7 +170,7 @@ Read array from hdf5:
 	    print(darr.shape)
 
 	    # make changes
-	    data = data + 1
+	    darr = darr + 1
 
 	    # view changes of array part
 	    print(darr[:30, :30].compute())    # view first 30 rows and first 30 columns
@@ -178,4 +178,24 @@ Read array from hdf5:
 	    # save edited array back
 	    da.store(darr, d)  # as the array is stored in hdf5, saving back back will be amazingly fast
 	    
+	    f.close()
+
+# 13
+Append new array to existing dataset (array) in hdf5:
+	import dask.array as da
+	import h5py
+
+	if __name__=="__main__":
+	    # open file
+	    f = h5py.File('myfile.hdf5')
+	    d = f['/data']
+	    print('Existing shape:', d[...].shape)
+
+	    # new array
+	    new_arr  = np.random.rand(100, vec_len)
+	    new_darr = da.from_array(new_arr, chunks=shape)
+
+	    # append new array
+	    d = da.concatenate([d[...], new_darr], axis=0)
+
 	    f.close()
