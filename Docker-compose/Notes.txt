@@ -10,10 +10,13 @@ To run docker-compose, go to folder with Dockerfile file and docker-compose file
     sudo docker-compose up
 
 Note:
-    And if you get error smth like:
+    And if you get error saying smth like:
+        failed to setup ip tables docker
         iptables: No chain/target/match error (with docker network create)	
     Run:
         systemctl restart docker
+	sudo docker-compose up
+
     That's because maybe something has deleted the docker iptables entries. 
     Docker will recreate them if you restart it (systemctl restart docker).
     You'll want to disable anything else that manages iptables to prevent this from happening in the future.
