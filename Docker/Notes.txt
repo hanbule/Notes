@@ -11,7 +11,7 @@ List running container IDs only:
       docker ps -q
 
 1.3
-List all containers:
+List history of all containers:
       docker ps -a
 
 1.4
@@ -51,8 +51,8 @@ Stop running container:
 	docker stop <container ID>
 
 Ex:
-   docker run -d <image name>   # -d option: Run container in background and print container ID
-   docker stop 
+   docker run -d <image name>   # -d option: Run container in background as deamon and print container ID
+   docker stop <container ID>
 
 5.1
 To check docker info:
