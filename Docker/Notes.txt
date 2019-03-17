@@ -51,7 +51,7 @@ Check docker status (ubuntu):
 	
 6
 Access docker container:
-	a - start container of interest first
-	b - look up <container id> by command 1.1 above
-	b - run in terminal:
+	a - look up <container id> of container X by command 1.1 above
+	b - start container X
+	c - run in terminal to acccess container X:
 	    docker exec -it <container id> bash
