@@ -54,4 +54,6 @@ Access docker container:
 	a - look up <container id> of container X by command 1.1 above
 	b - start container X
 	c - run in terminal to acccess container X:
-	    docker exec -it <container id> bash
+	     docker exec -it <container id> bash
+	d - run in terminal to exit the container:
+	     exit
