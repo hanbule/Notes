@@ -1,0 +1,11 @@
+1
+Pull airflow image:
+    docker pull puckel/docker-airflow   # most popular one
+    
+2
+Start container:
+    docker run -d -p 8080:8080 puckel/docker-airflow webserver
+and open Airflow gui in browser:
+    localhost:8080
+    
+3
