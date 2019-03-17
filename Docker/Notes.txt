@@ -1,5 +1,5 @@
 Links:
-	http://www.marknagelberg.com/digging-into-data-science-tools-docker/
+	http://www.marknagelberg.com/digging-into-data-science-tools-docker/  # overview
 
 1.1
 List containers:
@@ -25,6 +25,9 @@ List images:
 Remove image:
 	docker rmi <image ID>
 
+NOTE:
+   'docker images' or 'docker ps' commands show only part of the long IDs
+
 3
 Start/stop docker (ubuntu):
 	systemctl start/stop docker
@@ -32,8 +35,15 @@ Start/stop docker (ubuntu):
 	service start/stop docker
 
 4
-Start docker image:
+Start docker container of image:
 	docker run <options> <image name>
+
+Stop running container:
+	docker stop <container ID>
+
+Ex:
+   docker run -d <image name>   # -d option: Run container in background and print container ID
+   docker stop 
 
 5.1
 To check docker info:
