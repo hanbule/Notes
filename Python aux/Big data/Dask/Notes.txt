@@ -110,6 +110,8 @@
 # apply() func:
 	ddf['new_col'] = ddf.map_partitions(lambda df : df.apply(lambda x : x['some_col'], axis=1))  # as dask df consists of dataframes
 
+Note: the above procedure goes sequentially, i.e. one df is processed at a time, so no parallelization at all.
+
 	
 # 10.1
 # Convert dask df to dask array:
