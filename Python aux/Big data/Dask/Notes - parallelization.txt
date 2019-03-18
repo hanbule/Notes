@@ -4,7 +4,8 @@ Note:
     - huge file should not be stored as a whole but rather be splitted into pieces
 
 Ex 1:
-Pieces of files are read in parallel, 
+Each piece of file is read in parallel, processed in parallel and stored in parallel as soon as processing finishes:
+
     import dask.dataframe as dd
     from dask.delayed import delayed
 
