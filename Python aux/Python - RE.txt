@@ -11,12 +11,12 @@ Split by single dot only:
 	Output:
 	    ["I'am boy", ' And hero... anyway', '']
 
-# 2
+# 2.1
 Replace multiple spaces to single space:
 	import re
 	my_str = re.sub(' +',' ', my_str)
 
-#3
+#2.2
 Replace certain group of symbols by certain symbol:
 	s = "aa 4b 6c"
 	regex = re.compile('[%s]' % re.escape('0123456789'))
@@ -24,7 +24,15 @@ Replace certain group of symbols by certain symbol:
 
 	Output:
 	    aa _b _c
-	    
+
+#2.3
+Replace last dot:
+	s = "Big. Bug."
+	r = re.sub('\\.$','', s)
+
+	Output:
+	    Big. Bug
+
 #4
 Find link from html tag:
 	s = 'p href="link" /p'
