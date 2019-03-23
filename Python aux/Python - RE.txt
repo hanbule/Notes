@@ -41,3 +41,15 @@ Find all tokens ending with one of specific symbols:
 	
 	Output:
 	    ['You!', ' Are you Tom?', ' I am Danny.']
+
+#7
+Find emails:
+	s = "ss barack.obama@whitehouse.gov dd"
+	regex = re.compile(r'[\w.]+@\w+\.[a-z]{3}')
+	regex.findall(s)
+	
+	Output:
+	    ['barack.obama@whitehouse.gov']
+	    
+	    
+	    
