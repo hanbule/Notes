@@ -25,3 +25,11 @@ Get link from html tag:
 	
 	Output:
 	    [link]
+
+#5
+Get all tokens ending with one of specific symbols:
+	s = """You! Are you Tom? I am Danny."""
+	r = re.findall('.*?[.!?]', s) .  # get tokens ending with either . or ! or ?
+	
+	Output:
+	    ['You!', ' Are you Tom?', ' I am Danny.']
