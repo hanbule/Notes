@@ -18,7 +18,7 @@ Replace certain group of symbols by certain symbol:
 	    aa _b _c
 	    
 #4
-Get link from html tag:
+Find link from html tag:
 	s = 'p href="link" /p'
 	regex = re.compile('href="(.+)"')
 	r = regex.findall(s)
@@ -27,7 +27,15 @@ Get link from html tag:
 	    [link]
 
 #5
-Get all tokens ending with one of specific symbols:
+Find all tokens enclosed with parantheses:
+	s = "aa (abc) dd"
+	print(re.findall("\(.*?\)", s))
+
+	Output:
+	    ['(abc)']	
+
+#6
+Find all tokens ending with one of specific symbols:
 	s = """You! Are you Tom? I am Danny."""
 	r = re.findall('.*?[.!?]', s) .  # get tokens ending with either . or ! or ?
 	
