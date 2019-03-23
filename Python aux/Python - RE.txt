@@ -1,7 +1,15 @@
-# 1
+# 1.1
 Split string by multiple delimiters:
 	import re
 	re.split(',|;|\\\\', str)    # split by , and ; and \\
+
+# 1.2
+Split by single dot only:
+	s = "I'am boy. And hero... anyway."
+	r = re.split("(?<!\\.)\\.(?!\\.)", s)
+
+	Output:
+	    ["I'am boy", ' And hero... anyway', '']
 
 # 2
 Replace multiple spaces to single space:
@@ -13,7 +21,7 @@ Replace certain group of symbols by certain symbol:
 	s = "aa 4b 6c"
 	regex = re.compile('[%s]' % re.escape('0123456789'))
 	r = regex.sub('_', s)
-	
+
 	Output:
 	    aa _b _c
 	    
