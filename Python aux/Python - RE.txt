@@ -6,7 +6,7 @@ Split string by multiple delimiters:
 # 1.2
 Split by single dot only:
 	s = "I'am boy. And hero... anyway."
-	r = re.split("(?<!\\.)\\.(?!\\.)", s)
+	r = re.split("(?<!\\.)\\.(?!\\.)", s)   # by dots which is not preceded and followed by dot
 
 	Output:
 	    ["I'am boy", ' And hero... anyway', '']
