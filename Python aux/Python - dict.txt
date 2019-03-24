@@ -28,5 +28,11 @@ ordered dict
 
 # 6.1
 # Function 
-def get_dict_items_except_for_keys(dict, exclude_keys_ls):
-	return {k:v for k,v in dict.items() if(k not in exclude_keys_ls)}
+	def get_dict_items_except_for_keys(dict, exclude_keys_ls):
+		return {k:v for k,v in dict.items() if(k not in exclude_keys_ls)}
+
+# 7
+Save into json:
+        with open("my_file.json", 'a') as f:
+            json.dump(my_dict, f, ensure_ascii=False, indent=None)
+            f.write(',\n')
