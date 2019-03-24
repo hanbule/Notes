@@ -1,10 +1,11 @@
 Note:
     To use Dask's parallelization power we:
-    - always use delayed() function
+    - always use delayed() function or better Client from ditributed
     - huge file should not be stored as a whole but rather be splitted into pieces
 
-Ex 1:
-Each piece of file is read in parallel, processed in parallel and stored in parallel as soon as processing finishes:
+Ex 1 - delayed():
+    Each piece of file is read in parallel, processed in parallel and stored in parallel as soon as processing finishes:
+    But sometimes you might not see speed gain though.
 
     import dask.dataframe as dd
     from dask.delayed import delayed
@@ -21,3 +22,31 @@ Each piece of file is read in parallel, processed in parallel and stored in para
     writes = [delayed(save)(df, fn) for df, fn in zip(dfs, filenames)]
 
     dd.compute(*writes)
+
+
+Ex 2 - Client():
+    import dask.dataframe as dd
+    from dask.delayed import delayed
+    from dask.distributed import Client, LocalCluster
+    from my_custom_library import load, save, process, summarize
+
+
+    lc = LocalCluster(n_workers=20, threads_per_worker=2)
+    client = Client(lc)
+
+    filenames = ...
+    dfs = [client.submit(load, fn) for fn in filenames]     # list of dfs loaded in parallel (lazy ops)
+    dfs_p = [client.submit(process, df) for df in dfs]      # list of processed dfs in parallel (lazy ops)
+    res   = client.submit(summarize, dfs_p)                 # some summarize() func that takes list of processed dfs 
+                                                              as argument (lazy op)
+    final_res = res.result()                                # actual execution of the whole DAG above 
+                                                              result() ~ compute()
+
+    writes = [client.submit(save, df, fn) for df, fn in zip(dfs_p, filenames)]  # some save() func that takes df and filename
+                                                                                # as argument (lazy ops)
+    client.gather(writes)      # actual execution of all save() funcs 
+                               # gather() triggers list of lazy ops, i.e. triggers result() for every lazy op
+    
+    
+    
+    
