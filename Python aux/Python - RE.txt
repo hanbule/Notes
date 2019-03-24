@@ -6,10 +6,18 @@ Split string by multiple delimiters:
 # 1.2
 Split text into sents (i.e. by single dot only):
 	s = "I'am boy. And hero... anyway."
-	r = re.split("(?<!\\.)\\. +(?!\\.)", s)   # by dots which is not preceded and followed by dot
+	r = re.split("(?<!\\.)\\. +(?!\\.)", s)      # by dots which is not preceded and followed by other dot
 
 	Output:
-	    ["I'am boy", ' And hero... anyway', '']
+	    ["I'am boy", 'And hero... anyway', '']   # remove last dot first to avoid '' 
+
+# 1.3
+Split text into tokens (i.e. by single dot and spaces only):
+	s = "I'am boy. And hero... anyway."
+	r = re.split("(?<!\\.)\\. +(?!\\.)| +", s)
+
+	Output:
+	    ["I'am", 'boy', 'And', 'hero...', 'anyway.']   # remove last dot first to avoid dot in last token 'anyway.' 
 
 # 2.1
 Replace multiple spaces to single space:
