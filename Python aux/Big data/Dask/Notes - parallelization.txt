@@ -31,7 +31,7 @@ Ex 2 - Client():
     from my_custom_library import load, save, process, summarize
 
 
-    lc = LocalCluster(n_workers=20, threads_per_worker=2)
+    lc = LocalCluster(n_workers=20, threads_per_worker=2)   # n_workers ~ no of cores will be used
     client = Client(lc)
 
     filenames = ...
