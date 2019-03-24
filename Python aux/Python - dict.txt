@@ -43,3 +43,7 @@ Save into json:
         with open("my_file.json", 'a') as f:
             json.dump(my_dict, f, ensure_ascii=False, indent=None)
             f.write(',\n')
+
+# 8
+List as keys with assigned values:
+	d = dict.fromkeys(ls, 0)
