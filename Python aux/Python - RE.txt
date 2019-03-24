@@ -4,7 +4,7 @@ Split string by multiple delimiters:
 	re.split(',|;|\\\\', str)    # split by , and ; and \\
 
 # 1.2
-Split by single dot only:
+Split text into sents (i.e. by single dot only):
 	s = "I'am boy. And hero... anyway."
 	r = re.split("(?<!\\.)\\. +(?!\\.)", s)   # by dots which is not preceded and followed by dot
 
