@@ -10,7 +10,14 @@ dict_ = defaultdict(lambda:0) # creates dict with default value 0
 for i in [1,2,3]:             # assigns keys where each has default value 0
 	dict_[i]
 
-# 3
+# 3.1
+Sort dict by keys:
+	from collections import OrderedDict
+	
+	d = { ... }
+	d = OrderedDict(sorted(d.items()))
+
+# 3.2
 Sort dict by values:
 	d = { ... }
 	sorted_by_value = sorted(d.items(), key=lambda x: x[1])                # ascending
