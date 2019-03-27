@@ -1,0 +1,38 @@
+# Clustering - Kmeans:
+    import dask.dataframe as dd
+    import dask.array as da
+    from dask_ml.cluster import KMeans
+    import h5py
+    import time
+    from datetime import datetime
+
+    def get_elapsed_time(start_time):
+        elapsed_time = time.time()-start_time
+
+        days     = elapsed_time/(86400)   # 86400 sec = 24 hours
+        rem_time = elapsed_time%(86400)
+        str_ = time.strftime("%H:%M:%S", time.gmtime(rem_time))
+
+        return '%d days and %s' % (days, str_)
+
+
+    if __name__=="__main__":
+        # open array in hdf5
+        f = h5py.File('myfile.hdf5')
+        d = f['/data']
+        
+        # read array in chunks/pieces as aopposed to loading it fully
+        data = da.from_array(d, chunks=(1000,9000))
+        print(data.shape)
+        # print(data[:30, :30].compute())   # print piece of array
+        
+        # start training Kmeans
+        print('Start time: ', datetime.now().strftime('%H:%M:%S'))
+        start = time.time()
+
+        K = 2
+        cls = KMeans(n_clusters=K, random_state=1, n_jobs = 10).fit(data)
+
+        print('Time spent:', get_elapsed_time(start))
+        
+        
