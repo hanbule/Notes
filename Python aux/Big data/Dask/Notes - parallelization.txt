@@ -58,8 +58,9 @@ Ex 2 - Client():
         f_my_dcit = client.scatter(my_dict, broadcast=True)   # additionally set broadcast to True, 
                                                               # as my_dict is passed/mapped to many functions
         dfs_p = [client.submit(process, df, f_my_dict) for df in dfs]
-# 2 - pass data to function by reading/loading it inside function as opposed to passing it as arg:
+# 2 - pass data to function by reading/loading it within function as opposed to passing it as arg:
         def process():
             my_dict = json.load(...)
 
-
+# 2nd way might be better as in 1st way the whole data is passed from client, which requires fitting the whole thing into local memeory,
+# copying that data and serialization costs along the way.
