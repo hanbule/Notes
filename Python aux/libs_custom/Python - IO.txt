@@ -50,7 +50,7 @@
 			else:
 				curr_path_ls.append(e)
 
-		return '/'.join(curr_path_ls)
+		return '/'.join(curr_path_ls) + "/"
 
 
 	if __name__=='__main__':
