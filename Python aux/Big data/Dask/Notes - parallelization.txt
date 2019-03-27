@@ -55,8 +55,9 @@ Ex 2 - Client():
 # then you might encounter memory issues. We also pass df as argument, but there shouldn't be any problems as it is lazy loaded data.
 # in such cases we have to ways to go:
 # 1 - need to scatter data passed first, and then pass to function:
-        f_my_dcit = client.scatter(my_dict, broadcast=True)   # additionally set broadcast to True, 
-                                                              # as my_dict is passed/mapped to many functions
+        f_my_dcit = client.scatter(my_dict, broadcast=True)   # in this case additionally set broadcast to True, 
+                                                              # as my_dict is passed/mapped to many functions 
+                                                              # i.e. it's like single my_dict is shared by many functions
         dfs_p = [client.submit(process, df, f_my_dict) for df in dfs]
 # 2 - pass data to function by reading/loading it within function as opposed to passing it as arg:
         def process():
