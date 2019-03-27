@@ -52,7 +52,7 @@ Ex 2 - Client():
     
     
 # Note: if any data passed to function as argument is large (>1mb) like in above line b where we pass my_dict as argument to process(), 
-# then you might encounter memory issues.
+# then you might encounter memory issues. We also pass df as argument, but there shouldn't be any problems as it is lazy loaded data.
 # in such cases we have to ways to go:
 # 1 - need to scatter data passed first, and then pass to function:
         f_my_dcit = client.scatter(my_dict, broadcast=True)   # additionally set broadcast to True, 
