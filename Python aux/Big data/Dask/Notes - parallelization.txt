@@ -30,13 +30,15 @@ Ex 2 - Client():
     from dask.distributed import Client, LocalCluster
     from my_custom_library import load, save, process, summarize
 
+    my_dict = {...}    # just some data
 
     lc = LocalCluster(n_workers=20, threads_per_worker=2)   # n_workers ~ no of cores will be used
     client = Client(lc)
 
     filenames = ...
-    dfs = [client.submit(load, fn) for fn in filenames]     # list of dfs loaded in parallel (lazy ops)
-    dfs_p = [client.submit(process, df) for df in dfs]      # list of processed dfs in parallel (lazy ops)
+    dfs = [client.submit(load, fn) for fn in filenames]     # line a: list of dfs loaded in parallel (lazy ops)
+    dfs_p = [client.submit(process, df, deepcopy(my_data)) for df in dfs]      # line b: list of processed dfs in parallel (lazy ops)
+        
     res   = client.submit(summarize, dfs_p)                 # some summarize() func that takes list of processed dfs 
                                                               as argument (lazy op)
     final_res = res.result()                                # actual execution of the whole DAG above 
@@ -49,4 +51,15 @@ Ex 2 - Client():
     
     
     
-    
+# Note: if any data passed to function as argument is large (>1mb) like in above line b where we pass my_dict as argument to process(), 
+# then you might encounter memory issues.
+# in such cases we have to ways to go:
+# 1 - need to scatter data passed first, and then pass to function:
+        f_my_dcit = client.scatter(my_dict, broadcast=True)   # additionally set broadcast to True, 
+                                                              # as my_dict is passed/mapped to many functions
+        dfs_p = [client.submit(process, df, f_my_dict) for df in dfs]
+# 2 - pass data to function by reading/loading it inside function as opposed to passing it as arg:
+        def process():
+            my_dict = json.load(...)
+
+
