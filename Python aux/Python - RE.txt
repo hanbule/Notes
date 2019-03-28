@@ -76,4 +76,16 @@ Find emails:
 	    ['barack.obama@whitehouse.gov']
 	    
 	    
-	    
+# 8.1
+Match if string does not contain any lower chars:
+	re.match("[^a-z]", s)
+
+# 8.2
+Match if string consists of lower char or underscore only:
+	re.match("^[a-z_]*$", s)
+	
+# 8.3
+Match if string end with .com:
+	re.match("^.*\.com$", s)
+	
+	
