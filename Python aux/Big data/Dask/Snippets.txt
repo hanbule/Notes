@@ -13,3 +13,19 @@ CSV into Sqlite: (should be wo shuffling)
 
 		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
     
+2
+Chunkify large file into small files:
+	import dask.dataframe as dd
+
+	if __name__=="__main__":
+	    path = ...
+	    ddf = dd.read_csv(path, encoding="utf-8", blocksize=2e5)
+	    # print("DDF shape:", len(ddf), len(ddf.columns))
+	    # print("Parts:", ddf.npartitions)              
+
+	    ddf['row_id'] = 1
+	    ddf['row_id'] = ddf.row_id.cumsum()
+
+	    ddf.to_csv("some_path/my_chunk-*.csv", index=False, columns=[...])
+    
+    
