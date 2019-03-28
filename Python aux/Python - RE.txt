@@ -88,4 +88,6 @@ Match if string consists of lower char or underscore only:
 Match if string end with .com:
 	re.match("^.*\.com$", s)
 	
-	
+# 8.4
+Match if string does not contain any lower char:
+	re.match("[^a-z]", s)
