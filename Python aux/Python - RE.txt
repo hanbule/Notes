@@ -90,4 +90,4 @@ Match if string end with .com:
 	
 # 8.4
 Match if string does not contain any lower char:
-	re.match("[^a-z]", s)
+	re.match("^[^a-z]*$", s)
