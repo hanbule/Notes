@@ -14,7 +14,7 @@ CSV into Sqlite: (should be wo shuffling)
 		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
     
 2
-Chunkify large file into small files:
+Chunkify large file into small files with row_id:
 	import dask.dataframe as dd
 
 	if __name__=="__main__":
@@ -26,6 +26,6 @@ Chunkify large file into small files:
 	    ddf['row_id'] = 1
 	    ddf['row_id'] = ddf.row_id.cumsum()
 
-	    ddf.to_csv("some_path/my_chunk-*.csv", index=False, columns=[...])
+	    ddf.to_csv("some_path/my_chunk-*.csv", index=False, columns=["row_id", <some other cols>])
     
     
