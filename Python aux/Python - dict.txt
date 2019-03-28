@@ -20,8 +20,10 @@ Sort dict by keys:
 # 3.2
 Sort dict by values:
 	d = { ... }
-	sorted_by_value = sorted(d.items(), key=lambda x: x[1])                # ascending
-	sorted_by_value = sorted(d.items(), key=lambda x: x[1], reverse=True)  # descending
+	sorted_d = sorted(d.items(), key=lambda x: x[1])                # ascending
+	sorted_d = sorted(d.items(), key=lambda x: x[1], reverse=True)  # descending
+	
+	sorted_d = OrderedDict(sorted_d)  # need to convert to dict as sorted() returns sorted list of key-value pairs, not dict
 
 # 4
 delete from dict by key:
