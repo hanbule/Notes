@@ -1,3 +1,5 @@
+# Dask: 1.1.3
+
 # 1
 # Read single csv file
 # Note: when dask loads file into dataframe, it partititons it into several chunks (i.e. several pandas dataframes)
