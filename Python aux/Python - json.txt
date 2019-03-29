@@ -1,0 +1,13 @@
+# 1
+# persist:
+    import json
+    d = {...}
+    with open("my_file.json", "w") as out:
+        json.dump(d, out, indent=2)
+        
+# 2
+# load:
+    import json
+    d = {...}
+    with open("my_file.json", "r") as infile:
+        d = json.load(infile)
