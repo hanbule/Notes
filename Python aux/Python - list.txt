@@ -28,15 +28,27 @@ Copy list:
 
 	ls_1 = ls_2        # just creates reference to ls_2
 
-# 5
+# 5.1
 Delete from list by index:
 	del ls[element_idx]
 
-Delete from list by value:
-	ls.remove[value]	         # removes only first occurence
+Delete specific value from list:
+	ls.remove[value]	                # removes only first occurence
 
-Delete from list by value:
+Delete specific value from list:
 	ls = [x for x in ls if x != my_value]   # removes all occurences
+
+# 5.2
+Delete specific strings from list of strings:
+    	# option 1
+	remove_strings = [...]
+	ls = [x for x in ls if x not in remove_strings]
+	
+	# option 2 using regex (faster)
+	rem_ls = ["^%s$" % x for x in remove_strings]
+	rem_str = "|".join(rem_ls)
+	ls = list(pandas.Series(ls).str.replace(rem_str, ""))
+	ls = [x for x in ls if x != ""]
 
 # 6
 Reverse list in place:
