@@ -1,8 +1,11 @@
 # 1
 Takes text and returns list of tokens:
     def tokenize_1(text):
-        tokens = re.split("(?<! т.е)(?<!\\.)\\. +(?!\\.)(?!com)|(?<![0-9]), *(?![0-9])| +", text)
-        return tokens
+        if(text=="" or text!=text):
+            return text
+        else:
+            tokens = re.split("(?<! т.е)(?<!\\.)\\. +(?!\\.)(?!com)|(?<![0-9]), *(?![0-9])| +", text)
+            return tokens
 
 # 2
 Takes text and returns list of unique tokens:
