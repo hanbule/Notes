@@ -25,10 +25,17 @@ Sort dict by values:
 	
 	sorted_d = OrderedDict(sorted_d)  # need to convert to dict as sorted() returns sorted list of key-value pairs, not dict
 
-# 4
+# 4.1
 delete from dict by key:
 	d = { ... }
 	d.pop(key_value)
+	
+# 4.2
+delete from dict in loop:
+	d = { ... }
+	for (k,v) in list(d.items()):
+	    if(k==val):
+		d.pop(v)	
 
 # 5
 ordered dict
