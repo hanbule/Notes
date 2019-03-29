@@ -201,3 +201,9 @@ Append new array to existing dataset (array) in hdf5:
 	    d = da.concatenate([d[...], new_darr], axis=0)
 
 	    f.close()
+
+# 14
+If you get error like:
+	YAMLLoadWarning: calling yaml.load() without Loader=... is deprecated, as the default Loader is unsafe.
+try reinstalling pyyaml lib to version 3.13 in python
+
