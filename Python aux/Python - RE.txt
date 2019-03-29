@@ -122,3 +122,8 @@ Match if string end with .com:
 # 8.4
 Match if string does not contain any lower char:
 	re.match("^[^a-z]*$", s)
+
+# 8.5
+Match if string contains at least one digit and at least one - (dash):
+	re.match("^(?=.*[0-9])(?=.*[-]).*$", s)
+
