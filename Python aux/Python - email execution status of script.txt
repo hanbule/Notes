@@ -42,7 +42,7 @@ if __name__=="__main__":
 	-----------------------------------------------------------------
 	# execute cmd command and get execution status code
 	return_code = subprocess.call(cmd)
-	print("Execution status: %d \n" % return_code)
+	print("\nExecution status: %d \n" % return_code)
 
 	# 3 email notification about END status
 	-----------------------------------------------------------------
