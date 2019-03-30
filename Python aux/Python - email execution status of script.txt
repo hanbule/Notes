@@ -58,7 +58,7 @@ if __name__=="__main__":
 
 	# 4 shut down computer in 5 sec
 	-----------------------------------------------------------------
-	# cmd = ['shutdown -s -t 5']
+	# cmd = ['shutdown', '-s', '-t', '5']
 	# return_code = subprocess.Popen(cmd, stdout=subprocess.PIPE)
 	
 	sys.exit(0)
