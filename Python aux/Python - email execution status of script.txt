@@ -29,7 +29,7 @@ if __name__=="__main__":
 	-----------------------------------------------------------------
 	code_name = 'My hdf5 experiment'
 	SBJ = 'Code execution STARTED, code name: %s' % code_name
-	MSG = 'Code execution STARTED on %s' % str(datetime.datetime.now())
+	MSG = 'Code execution STARTED \nTime email sent: %s' % str(datetime.datetime.now())
 	send_msg(SBJ, MSG)
 
 	# 2.1 get code execution command
@@ -49,10 +49,10 @@ if __name__=="__main__":
 	# create subject and content to email according to status code
 	if return_code == 0:
 		SBJ = 'Code execution status - SUCCESSFUL'
-		MSG = 'Code finished SUCCESSFULLY'
+		MSG = 'Code finished SUCCESSFULLY \nTime email sent: %s' % str(datetime.datetime.now())
 	else:
 		SBJ = 'Code execution status - FAILED'
-		MSG = 'Code FAILED with code %d' % return_code
+		MSG = 'Code FAILED with code %d  \nTime email sent: %s' % (return_code, str(datetime.datetime.now()))
 
 	send_msg(SBJ, MSG)
 
