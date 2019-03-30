@@ -8,16 +8,18 @@ def send_msg(email_subject='N/A', email_body='N/A'):
 	mail.ehlo()
 	mail.starttls()
 
-	FROM  = 'altay.b...k@gmail.com'
+	FROM  = 'a...ay.b...k@gmail.com'
 	passw = < password of FROM email >
-	TO    = 'altay.b...k@gmail.com'
+	TO    = 'a...ay.b...k@gmail.com'
 	mail.login(FROM, passw)
 
 	message = 'Subject: {}\n\n{}'.format(email_subject, email_body)
 	mail.sendmail(FROM, TO, message) 
 	mail.close()
 
-	print("Email sent")
+	print("Email sent:")
+	print("\tSubject: %s" % email_subject)
+	print("\tText: %s" % email_body)
 
 
 
@@ -29,14 +31,17 @@ if __name__=="__main__":
 	MSG = 'Code execution STARTED on %s' % str(datetime.datetime.now())
 	send_msg(SBJ, MSG)
 
-	# 2 start code execution
+	# 2.1 get code execution command
 	-----------------------------------------------------------------
 	# cmd command (splitted by tokens)
-	cmd = ['python', '2.1 - Cluster word vecs v7.0.py']  # e.g. 'python test_task.py' in cmd
+	print("\nCode output:")
+	cmd = ['python', <'my_python_script.py'>]    # e.g. 'python my_python_script.py' in cmd
 	
+	# 2.2 run code execution command
+	-----------------------------------------------------------------
 	# execute cmd command and get execution status code
 	return_code = subprocess.call(cmd)
-	print return_code
+	print("Execution status: %d \n" % return_code)
 
 	# 3 email notification about END status
 	-----------------------------------------------------------------
