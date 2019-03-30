@@ -2,6 +2,7 @@ import sys
 import subprocess
 import smtplib
 import datetime
+import os
 
 def send_msg(email_subject='N/A', email_body='N/A'):
 	mail = smtplib.SMTP('smtp.gmail.com',587)
@@ -55,4 +56,8 @@ if __name__=="__main__":
 
 	send_msg(SBJ, MSG)
 
+	# 4 shut down computer in 3 sec
+	-----------------------------------------------------------------
+	# os.system("shutdown /s /t 3");
+	
 	sys.exit(0)
