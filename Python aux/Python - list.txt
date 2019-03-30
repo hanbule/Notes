@@ -39,16 +39,26 @@ Delete specific value from list:
 	ls = [x for x in ls if x != my_value]   # removes all occurences
 
 # 5.2
-Delete specific strings from list of strings:
+Delete list of strings from list of strings:
     	# option 1
-	remove_strings = [...]
-	ls = [x for x in ls if x not in remove_strings]
+	    remove_strings = [...]
+	    ls = [x for x in ls if x not in remove_strings]
 	
-	# option 2 using regex (faster)
-	rem_ls = ["^%s$" % x for x in remove_strings]
-	rem_str = "|".join(rem_ls)
-	ls = list(pandas.Series(ls).str.replace(rem_str, ""))
-	ls = [x for x in ls if x != ""]
+	# option 2.1 using regex (faster)
+	    regex_ls = ["^%s$" % x for x in remove_strings]
+	    regex_str = "|".join(rem_ls)
+	 
+	    ls = list(pandas.Series(ls).str.replace(regex_str, ""))
+	    ls = [x for x in ls if x != ""]
+	
+	# option 2.2 using regex (in case some strings in remove_strings has non-alphanum chars)
+	    repl = lambda m: "\\"+m.group(0)
+	    regex_ls = list(pd.Series(remove_strings).str.replace(r"[^a-z0-9]", repl))  # add \\ before each non-alphanum char
+	    regex_ls = ["^%s$" % x for x in remove_strings]
+	    regex_str = "|".join(rem_ls)
+	
+	    ls = list(pandas.Series(ls).str.replace(regex_str, ""))
+	    ls = [x for x in ls if x != ""]
 
 # 6
 Reverse list in place:
