@@ -1,5 +1,5 @@
 # 1
-Takes text and returns list of tokens:
+Tokenize text into tokens:
     def tokenize_1(text):
         if(text=="" or text!=text):
             return text
@@ -8,7 +8,7 @@ Takes text and returns list of tokens:
             return tokens
 
 # 2
-Takes text and returns list of unique tokens:
+Get list of unique tokens from text:
     def get_uniq_tokens(s):
         if(s == "" or s!=s):
             return s
