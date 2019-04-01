@@ -71,7 +71,7 @@ Get rows where they have certain token count:
 
 # 1.9
 Get single value:
-	df.loc[df['column name 1']==column_name, 'column name 2'].tolist()[0]
+	df.loc[df['column name 1']==<some value>, 'column name 2'].tolist()[0]
 
 
 # 2.1
