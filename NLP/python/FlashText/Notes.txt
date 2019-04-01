@@ -1,0 +1,44 @@
+# 1.1
+Replace words in text:
+
+    # Get KeywordProcessor()
+    from flashtext import KeywordProcessor
+    keyword_processor = KeywordProcessor()
+    
+    # Add words and their replacements
+    keyword_processor.add_keyword("apple", "--")
+    keyword_processor.add_keyword("boy", "--")
+    
+    # Replace words
+    s = "Big boy ate apple, apple_ *apple*"
+    cs = keyword_processor.replace_keywords(s)
+    
+    Outs:
+      "Big -- ate --, apple_ *--*"    # By default word non-boundary chars are [a-zA-Z_]
+                                      # i.e. not only space and comma will act as word separator
+                                      # but also other symbols will be determined as word separator
+      
+# 1.2
+Replace words in text 
+where we want space only as word separator:
+
+    # Get KeywordProcessor()
+    from flashtext import KeywordProcessor
+    keyword_processor = KeywordProcessor()
+    
+    # Add words and their replacements
+    keyword_processor.add_keyword("apple", "--")
+    keyword_processor.add_keyword("boy", "--")
+    
+    # Add additional non-boundary chars
+    keyword_processor.add_non_word_boundary("*")
+    keyword_processor.add_non_word_boundary(",")
+    
+    # Replace words
+    s = "Big boy ate apple, apple_ *apple*"
+    cs = keyword_processor.replace_keywords(s)
+    
+    Outs:
+      "Big -- ate apple, apple_ *apple*"
+      
+      
