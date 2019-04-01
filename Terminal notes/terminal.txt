@@ -36,8 +36,15 @@
 	to close screen:
 		exit
 
-6 - To search for string in all files in current directory and subdirectories:
-	grep -rl <your search string> .  # dot means current directory, -r mean -recursive for traversing subdirectories
+6.1 - Get list of files names from current directory and subdirectories where search string is found:
+	grep -rl <search string> .    # dot means current directory, -r mean -recursive for traversing subdirectories
+
+      Note: 
+	if <search string> has spaces, wrap into double-quotes ""
+
+6.2 - Get all lines from all files from current directory and subdirectories where search string is found:
+	grep -r <search string> .     # dot means current directory, -r mean -recursive for traversing subdirectories
+
 
 7.1 - To find only video files or python files in current folder via terminal:
 	find . -type f -iname '*.mp4' -or -iname '*.py'
