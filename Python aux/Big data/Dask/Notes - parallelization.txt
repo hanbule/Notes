@@ -9,6 +9,7 @@ Ex 1 - delayed():
 
     import dask.dataframe as dd
     from dask.delayed import delayed
+    # from dask import delayed, compute   # opt 2
 
     from my_custom_library import load, save
 
@@ -21,7 +22,8 @@ Ex 1 - delayed():
     dfs = df.to_delayed()
     writes = [delayed(save)(df, fn) for df, fn in zip(dfs, filenames)]
 
-    dd.compute(*writes)
+    dd.compute(*writes, scheduler="processes", num_workers=4)    # opt 1, num of cores set to 4
+    # compute(*writes, scheduler="processes", num_workers=4)     # opt 2
 
 
 Ex 2 - Client():
