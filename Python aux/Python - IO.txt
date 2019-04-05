@@ -44,7 +44,7 @@ CSV readers:
 	csv_writer = csv.writer(outfile)
 	csv_writer.writerow(values_ls)    # values should be in a list, or else each letter will be written in separate column
 
-# 4
+# 4.1
 Formatted print:
 	print('%-10s' % 'apple','text')
 	print('%-10s' % 'appleboy','text')
@@ -52,6 +52,19 @@ Formatted print:
 	output:
 	apple     text 
 	appleboy  text
+
+# 4.2
+Print numbers with leading zeros:
+	for i in range(7,13,1):
+		print("%04d" % i)
+
+	Outs:
+	  0007
+	  0008
+	  0009
+	  0010
+	  0011
+	  0012
 
 # 5
 Absolute dir the script is in:
