@@ -11,3 +11,20 @@ def iter_netsed_list(ls):
 
 def flatten_list(ls):
     return list(iter_netsed_list(ls))
+
+# 2
+# chunk list:
+def chunks(l, n):
+	# For item i in a range that is a length of l,
+	for i in range(0, len(l), n):
+		# Create an index range for l of n items:
+		yield l[i:i+n]
+        
+Usage:
+    first_names = ['Steve', 'Jane', 'Sara', 'Mary','Jack','Bob', 'Bily', 'Boni', 'Chris','Sori', 'Will', 'Won','Li']
+    print(list(chunks(first_names, 5)))
+
+Outs:
+    [['Steve', 'Jane', 'Sara', 'Mary', 'Jack'],
+    ['Bob', 'Bily', 'Boni', 'Chris', 'Sori'],
+    ['Will', 'Won', 'Li']]
