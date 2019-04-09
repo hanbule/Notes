@@ -1,10 +1,24 @@
-# 1
+# 1.1 - (deprecated)
 Tokenize text into tokens:
     def tokenize_1(text):
         if(text=="" or text!=text):
             return text
         else:
             tokens = re.split("(?<! т.е)(?<!\\.)\\. +(?!\\.)(?!com)|(?<![0-9]), *(?![0-9])| +", text)
+            return tokens
+
+# 1.2
+Tokenize text into tokens:
+    def tokenize_1(text):
+        if(text=="" or text!=text):
+            return text
+        else:
+            reg_part_1 = "(?<! т.е)(?<!\\.)\\. +(?!\\.)(?!com)"   # any dot acting like end of sent not part of token like т.е., .com, .., ...
+            reg_part_2 = " *, +|(?<=[^0-9]),(?=.)|(?<=[0-9]),(?=[^0-9])|(?<=.) ,(?=.)|(?<![0-9]),(?![0-9])"   # any comma preceded/folowed by space/s except comma between digits
+            reg_part_3 = " +"  # space/s
+            regs = [reg_part_1, reg_part_2, reg_part_3]
+            
+            tokens = re.split("|".join(regs), txt)
             return tokens
 
 # 2
