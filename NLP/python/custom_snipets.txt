@@ -1,4 +1,4 @@
-# 1.1 - (deprecated)
+# 1.1 - (deprecated, because comma separator is buggy)
 Tokenize text into tokens:
     def tokenize_1(text):
         if(text=="" or text!=text):
@@ -20,6 +20,15 @@ Tokenize text into tokens:
             
             tokens = re.split("|".join(regs), txt)
             return tokens
+
+Ex:
+Try out 1.1 and 1.2 an compare results:
+    s = "My, numbers 15 and 74,5 4, 5  4, a b , 48,67,666  c ,9"
+    tokenize_1(s)  # 1.1
+    tokenize_1(s)  # 1.2
+    
+    Correct one is ['My', 'numbers', '15', 'and', '74,5', '4', '5', '4', 'a', 'b', '48,67,666', 'c', '9']
+
 
 # 2
 Get list of unique tokens from text:
