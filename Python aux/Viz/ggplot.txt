@@ -1,5 +1,6 @@
 Notes:
   ggplot is for py2.7 only
+  ERROR 1 and ERROR 2 worked for py=2.7.15 and ggplot=0.11.5
 
 # 1
 Handling ERROR 1 during launching script:
@@ -20,7 +21,7 @@ Handling ERROR 1 during launching script:
         )
 
 # 2
-Handling ERROR 2 during launching script:
+Handling ERROR 2 after fixing ERROR 1:
     ImportError: No module named lib
     
     Solution:
