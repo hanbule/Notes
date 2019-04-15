@@ -251,3 +251,6 @@ Convert dataframe to csr matrix:
 	from scipy.sparse import csr_matrix
 	
 	csr+mtx = csr_matrix(df.values)
+# 20
+Get sum of rows:
+	df['sums'] = df.sum(axis=1)
