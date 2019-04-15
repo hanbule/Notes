@@ -1,0 +1,11 @@
+# 1
+Reduce dimensions to N:
+  from sklearn.manifold import TSNE
+
+  N = 2
+  tsne = TSNE(n_components=N, random_state=0, verbose=1)
+  tsne_results = tsne.fit_transform(data_df.values)    # df should contain feature data only
+  
+  tags_df = ...  # df with tags col
+  tags_df['X'] = tsne_results[:, 0]   # add reduced dimensions
+  tags_df['Y'] = tsne_results[:, 1]   # add reduced dimensions
