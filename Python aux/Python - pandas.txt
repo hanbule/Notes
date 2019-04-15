@@ -170,7 +170,7 @@ Convert dict to pandas:
 	my_dict = {'ID':[1,2,3,4], 'Col_1':['a','b','c','d']}
 	df = pd.DataFrame(my_dict)
 	
-or fi each entry is in separate dict like:
+or if each entry is in separate dict like:
 	d_1 = {'ID':1, 'Col_1':'a'}
 	d_2 = {'ID':2, 'Col_1':'b'}
 	d_3 = {'ID':3, 'Col_1':'c'}
@@ -245,3 +245,9 @@ Add row to dataframe:
 # 18
 Sort dataframe:
 	df.sort_values(columns_ls, inplace = True)
+
+# 19
+Convert dataframe to csr matrix:
+	from scipy.sparse import csr_matrix
+	
+	csr+mtx = csr_matrix(df.values)
