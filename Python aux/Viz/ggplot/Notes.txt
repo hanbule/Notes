@@ -1,0 +1,11 @@
+# 1
+    from ggplot import *
+    df = ...     # df has X and Y columns with x,y coordinates and 'tags' str column
+    
+    chart = ggplot(df, aes(x='X', y='Y', color='tags' )) \
+        + geom_point(size=50,alpha=0.18) \
+        + ggtitle("Colored by Tags") 
+    
+    t = theme_gray()
+    chart = chart+t
+    chart.show()
