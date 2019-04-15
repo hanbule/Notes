@@ -1,0 +1,41 @@
+Notes:
+  ggplot is for py2.7 only
+
+# 1
+Handling ERROR 1 during launching script:
+    AttributeError: 'module' object has no attribute 'tslib'
+    
+    Solution:
+    Open file:
+        <conda path installed>\lib\site-packages\ggplot\utils.py"
+    
+    and fix:
+        date_types = (
+        pd.tslib.Timestamp,  # change to pd.Timestamp,
+        pd.DatetimeIndex,
+        pd.Period,
+        pd.PeriodIndex,
+        datetime.datetime,
+        datetime.time
+        )
+
+# 2
+Handling ERROR 2 during launching script:
+    ImportError: No module named lib
+    
+    Solution:
+    Open file:
+        <conda path installed>\lib\site-packages\ggplot\stats\smoothers.py"
+        
+    and comment out:
+        from pandas.lib import Timestamp
+        
+    and fix:
+        date_types = (
+        pd.tslib.Timestamp,  # change to pd.Timestamp,
+        pd.DatetimeIndex,
+        pd.Period,
+        pd.PeriodIndex,
+        datetime.datetime,
+        datetime.time
+        )
