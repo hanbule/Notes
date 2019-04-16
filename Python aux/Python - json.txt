@@ -3,7 +3,8 @@
     import json
     d = {...}
     with open("my_file.json", "w") as out:
-        json.dump(d, out, indent=2)
+        json.dump(d, out, indent=2, ensure_ascii=False)   # use ensure_ascii=False so that cyrillic symbols are saved as-is 
+                                                          # not as \u escape sequence
         
 # 2
 # load:
