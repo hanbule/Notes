@@ -1,0 +1,11 @@
+# 1.1
+Copy directories and subdirectories with their contents:
+    robocopy <src dir> <dest dir> /E
+  
+# 1.2
+Copy directories and subdirectories excluding certain contents:
+    robocopy <src dir> <dest dir> /E /XF *.csv     # won't copy csv files
+  
+# 1.3
+Copy directories and subdirectories excluding certain contents and certain folders:
+    robocopy <src dir> <dest dir> /E /XF *.csv /XD "stage_1"    # won't copy csv files and folders with name "stage_1"
