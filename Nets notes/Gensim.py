@@ -62,6 +62,10 @@ words_freq = {}
 for w in model.wv.vocab:
     words_freq[w] = model.wv.vocab[w].count
 
+# 4.4
+# get vec of words
+for w in model.wv.vocab:
+    w_vec = model.wv[w]
 
 
 # GENSIM FUNCTIONS
