@@ -1,0 +1,19 @@
+# 1
+# Distance funstions:
+    import numpy as np
+    import math
+
+    # cos dist
+    def get_cosine_similarity(word_vec_1, word_vec_2):
+        cosine_similarity = np.dot(word_vec_1, word_vec_2)/ \
+                  (np.linalg.norm(word_vec_1)* np.linalg.norm(word_vec_2))
+        return cosine_similarity
+    
+    # euc dist (option 1, slower)
+    def get_euclidian_distance(word_vec_1, word_vec_2):
+        distance = math.sqrt(sum([(a - b) ** 2 for a, b in zip(word_vec_1, word_vec_2)]))
+        return distance
+
+    # euc dist (option 2, faster)
+    def get_euclidian_distance_2(word_vec_1, word_vec_2):
+        return np.linalg.norm(word_vec_1 - word_vec_2)
