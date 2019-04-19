@@ -33,3 +33,19 @@ Figure out difference from model.most_similar:
 # 5.3
 Get cosine similarity of two word vectors:
     model.similarity(word_vec_1, word_vec_2)  # word_vec_1, word_vec_2: 2 word vectors from trained word2vec model
+
+# Error handling 
+--------------------------------------------------------------------------
+#1
+If gensim lib gives warning like follows:
+    UserWarning: detected Windows; aliasing chunkize to chunkize_serial warnings.warn("detected Windows; aliasing chunkize to chunkize_serial")
+then you can block it with code lines before importing gensim:
+    import warnings
+    warnings.filterwarnings(action='ignore', category=UserWarning, module='gensim')
+    
+# 2
+For error such as:
+FutureWarning: Conversion of the second argument of issubdtype from `int` to `np.signedinteger` is deprecated. In future, it will be treated as `np.int32 == np.dtype(int).type`.
+    import warnings
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+---------------------------------------------------------------------------
