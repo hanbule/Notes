@@ -1,0 +1,35 @@
+# 1
+Loading model:
+    model_file_path = ''
+    model = word2vec.Word2Vec.load(model_file_path)
+
+# 2.1
+Iterate whole vocab of the model:
+    for word in model.wv.vocab:
+
+# 2.2
+Get vocab as a list:
+    words_vocab_ls = model.wv.vocab.keys()
+
+# 3
+Get vocab with word frequencies
+    words_freq = {}
+    for w in model.wv.vocab:
+        words_freq[w] = model.wv.vocab[w].count
+
+# 4
+Get vec of words:
+    for w in model.wv.vocab:
+        w_vec = model.wv[w]
+
+# 5.1
+Get top N closest words from trained word2vec model:
+    model.most_similar(word, topn=10)    # Args: word that exists  trained word2vec model
+
+# 5.2
+Figure out difference from model.most_similar:
+    model.similar_by_word(word)
+
+# 5.3
+Get cosine similarity of two word vectors:
+    model.similarity(word_vec_1, word_vec_2)  # word_vec_1, word_vec_2: 2 word vectors from trained word2vec model
