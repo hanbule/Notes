@@ -1,0 +1,5 @@
+# 1
+    from sklearn.cluster import KMeans
+    
+    kmeans = KMeans(n_clusters=K, random_state=rand_state, n_jobs = jobs)
+    kmeans_model = kmeans.fit(mtx)
