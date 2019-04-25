@@ -1,5 +1,5 @@
 # 1
-# Distance funstions:
+# Distance funstions (manual):
     import numpy as np
     import math
 
