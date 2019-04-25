@@ -1,0 +1,8 @@
+Notes:
+    Install from spherecluster
+
+# 1
+    from spherecluster import SphericalKMeans
+    
+    kmeans = SphericalKMeans(n_clusters=K, random_state=rand_state, n_jobs = jobs)
+    kmeans_model = kmeans.fit(mtx)
