@@ -11,8 +11,11 @@ Start mongodb with config file:
            logpath=C:\mongodb\log\mongo.log
 
 # 2
-Open mngodb shell after starting:
+Open mongodb shell after starting:
     C:\\mongodb\bin\mongo.exe
+    
+    to exit shell:
+       exit
 
 # 3
 Insert csv file into mongodb:
