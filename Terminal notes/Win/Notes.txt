@@ -9,3 +9,9 @@ Copy directories and subdirectories excluding certain contents:
 # 1.3
 Copy directories and subdirectories excluding certain contents and certain folders:
     robocopy <src dir> <dest dir> /E /XF *.csv /XD "stage_1"    # won't copy csv files and folders with name "stage_1"
+
+
+# 2
+Open cmd for specific open folder:
+    open or switch to specific folder and press ctrl+L
+    and type cmd
