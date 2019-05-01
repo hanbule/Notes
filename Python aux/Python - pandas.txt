@@ -254,3 +254,25 @@ Convert dataframe to csr matrix:
 # 20
 Get sum of rows:
 	df['sums'] = df.sum(axis=1)
+# 21
+Get index/s into column/s:
+	df2.reset_index(inplace=True) # index/s turned into col/s with names level_1, level_2 etc
+# 22
+Turn df1 into df2:
+	df1
+	id var1 var2
+	1  A    Z,Y
+	2  B    X
+	3  C    W,U,V
+	
+	df2
+	id var1 var2
+	1  A    Z
+	1  A    Y
+	2  B    X
+	3  C    W
+	3  C    U
+	3  C    V
+	
+	df2 = df1.drop('var2', axis=1).join(
+	/ df1.var2.str.split(',', expand=True).stack().reset_index(drop=True, level=1).rename('var2'))
