@@ -256,7 +256,7 @@ Get sum of rows:
 	df['sums'] = df.sum(axis=1)
 # 21
 Get index/s into column/s:
-	df2.reset_index(inplace=True) # index/s turned into col/s with names level_1, level_2 etc
+	df2.reset_index(inplace=True) # index/s turned into col/s with names level_0, level_1 etc
 # 22
 Split column into multiple rows based on delimiter (turn df1 into df2):
 	df1
