@@ -258,7 +258,7 @@ Get sum of rows:
 Get index/s into column/s:
 	df2.reset_index(inplace=True) # index/s turned into col/s with names level_1, level_2 etc
 # 22
-Turn df1 into df2:
+Split column into multiple rows based on delimiter (turn df1 into df2):
 	df1
 	id var1 var2
 	1  A    Z,Y
