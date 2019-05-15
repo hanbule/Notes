@@ -236,7 +236,7 @@ OR
 # 16
 Create empty dataframe:
 	columns_list = ['A', 'B']
-	df = pandas.DataFrame(columns=[columns_list])
+	df = pandas.DataFrame(columns=columns_list)
 
 # 17
 Add row to dataframe:
