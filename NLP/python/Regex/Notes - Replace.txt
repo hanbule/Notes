@@ -1,0 +1,37 @@
+# 1
+Replace multiple spaces to single space:
+	import re
+	my_str = re.sub(' +',' ', my_str)
+
+# 2
+Replace certain group of symbols by certain symbol:
+	s = "aa 4b 6c"
+	regex = re.compile('[%s]' % re.escape('0123456789'))
+	r = regex.sub('_', s)
+
+	Output:
+	    aa _b _c
+
+# 3
+Replace last dot:
+	s = "Big. Bug."
+	r = re.sub('\\.$','', s)
+
+	Output:
+	    Big. Bug
+
+# 4
+Replace group of tokens by specific token:
+	def replace_multitoken(tokens, replace_by):
+		rep = {t:replace_by for t in tokens}   # define desired replacements here
+
+		rep = dict((re.escape(k), v) for k, v in rep.items())
+		pattern = re.compile("|".join(rep.keys()))
+		return pattern.sub(lambda m: rep[re.escape(m.group(0))], d)
+		
+	text = "aa bb cc dd ee"
+	text = replace_multitoken(["aa", "bb", "dd"], "_")
+	
+	Output:
+	"_ _ cc _ ee"
+  
