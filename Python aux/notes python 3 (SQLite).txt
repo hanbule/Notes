@@ -7,16 +7,21 @@ import pandas as pd
 from sqlalchemy import create_engine, text
 
 
-# Connecting to the database file
+# Create db on disk
 # ---------------------------------------------------------------------------------------------------------
 sqlite_file = '/Users/altay.amanbay/Desktop/experiment/scorecard.sqlite'    # name of the sqlite database file
 conn = sqlite3.connect(sqlite_file)
 c = conn.cursor()
 
-# Create engine (optionally)
+# Create db on disk via connection engine (optionally)
 # ---------------------------------------------------------------------------------------------------------
 engine = create_engine('sqlite:///'+sqlite_file_name)
 conn = engine.connect()
+
+# Create db in RAM
+# ---------------------------------------------------------------------------------------------------------
+conn = sqlite3.connect(':memory:')
+c = conn.cursor()
 
 # Creating a new SQLite table
 # ---------------------------------------------------------------------------------------------------------
