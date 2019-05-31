@@ -161,3 +161,10 @@ fileContents = open(filename,"r").read()
 f = open(filename,"w", newline="\n")
 f.write(fileContents)
 f.close()
+
+
+# 10
+Delete chars in file:
+	with open(path, "a") as outfile:
+		outfile.seek(-2, os.SEEK_END)   # seek last 2 chars
+		outfile.truncate()
