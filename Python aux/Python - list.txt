@@ -33,7 +33,7 @@ Delete from list by index:
 	del ls[element_idx]
 
 Delete specific value from list:
-	ls.remove[value]	                # removes only first occurence
+	ls.remove(value)	                # removes only first occurence
 
 Delete specific value from list:
 	ls = [x for x in ls if x != my_value]   # removes all occurences
