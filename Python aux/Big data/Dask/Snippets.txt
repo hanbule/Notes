@@ -1,4 +1,4 @@
-1 
+# 1 
 CSV into Sqlite: (should be wo shuffling)
 
 	import sqlite3
@@ -13,7 +13,7 @@ CSV into Sqlite: (should be wo shuffling)
 
 		df.to_sql(name=table_name, con=conn, chunksize=500, if_exists='append', index=False)
     
-2
+# 2
 Chunkify large file into small files with row_id:
 	import dask.dataframe as dd
 
@@ -23,9 +23,113 @@ Chunkify large file into small files with row_id:
 	    # print("DDF shape:", len(ddf), len(ddf.columns))
 	    # print("Parts:", ddf.npartitions)              
 
+	    # add auto-increment row_id (optional)
 	    ddf['row_id'] = 1
 	    ddf['row_id'] = ddf.row_id.cumsum()
 
 	    ddf.to_csv("some_path/my_chunk-*.csv", index=False, columns=["row_id", <some other cols>])
     
-    
+# 3
+Template: pass files to Dask:
+	# -*- coding: utf-8 -*-
+
+	import sys
+	import os
+	import re
+	import pandas as pd
+	import json
+	import codecs
+	import re
+	import time
+	from datetime import datetime
+	from os import listdir
+	from os.path import isfile, isdir, exists, join, abspath, dirname, join
+	from dask import delayed, compute
+
+
+	# utility functions
+	# ---------------------------------------------------------
+	def print_and_log(log_file, *values):
+		with open(log_file, "a") as outfile:
+			outfile.write(" ".join([str(e) for e in values]) + "\n")
+		print(" ".join([str(e) for e in values]))
+
+	def cd_path(path_):
+		# 1
+		# split arg path
+		path_ls = re.split('/|\\\\', path_)
+		if(path_ls[-1] == ''):
+			del path_ls[-1]
+
+		# 2
+		# split current path
+		def current_script_dir(my_path):
+			return dirname(abspath(my_path)) + '/'
+
+		curr_path = current_script_dir(__file__)
+		curr_path_ls = re.split('/|\\\\', curr_path)
+		if(curr_path_ls[-1] == ''):
+			del curr_path_ls[-1]
+
+		# 3
+		if(path_ls[0]==".."):
+			# 3
+			# interpret arg path
+			for e in path_ls:
+				if(e == '..'):
+					del curr_path_ls[-1]
+				else:
+					curr_path_ls.append(e)
+
+			return '/'.join(curr_path_ls) + "/"
+		elif(path_ls[0]!=".."):
+			return "/".join(curr_path_ls+path_ls) + "/"    # '/'.join(path_ls) + "/"
+		elif(path_[:2]=="./"):
+			return "/".join(curr_path_ls+path_ls) + "/"
+
+	def get_elapsed_time(start_time):
+		elapsed_time = time.time()-start_time
+
+		days     = elapsed_time/(86400)   # 86400 sec = 24 hours
+		rem_time = elapsed_time%(86400)
+		str_ = time.strftime("%H:%M:%S", time.gmtime(rem_time))
+
+		return '%d days and %s' % (days, str_)
+
+	# process functions
+	# ---------------------------------------------------------
+	# function that processes one file
+	# Args:
+	# src_dir :  source dir where files are
+	# fn      :  file name in source dir
+	# dest_dir:  destination dir where processed file is exported
+
+	def process(src_dir, fn, dest_dir):
+	    do some stuff
+
+
+	SRC_DIR = cd_path("../dir_1/dir_2/")
+	DEST_DIR = "output/"
+	LOG_FILE = join(DEST_DIR, "logs.txt")
+
+	if __name__=="__main__":
+		# header code
+		start = time.time()
+
+		# 1.1
+		# Get file names
+		files = [f for f in listdir(SRC_DIR) if isfile(join(SRC_DIR, f)) and join(SRC_DIR, f)[-4:]==".csv"]
+		files = sorted(files)
+		print(files[:3])
+		print_and_log(LOG_FILE, "Files count:", len(files), "\n")
+		# sys.exit(0)
+
+		# 2
+		# process files
+		dfs = [delayed(process)(SRC_DIR, fn, DEST_DIR) for fn in files]
+		compute(*dfs, scheduler="processes", num_workers=7)
+
+		# footer code
+		print_and_log(LOG_FILE, "Time spent:", get_elapsed_time(start))
+		
+		
