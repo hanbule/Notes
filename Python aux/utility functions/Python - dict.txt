@@ -16,10 +16,10 @@ Join dicts into one by keys and sum their numeric values:
             return None
             
     Ex:
-      d1 = {1:12, 2:23}
-      d2 = {2:23, 3:21}
-      d3 = {2:1, 1:3, 4:44}
-      print add_counts([d1, d2, d3])
+        d1 = {1:12, 2:23}
+        d2 = {2:23, 3:21}
+        d3 = {2:1, 1:3, 4:44}
+        print add_counts([d1, d2, d3])
 
-      Outs: 
-          {1: 15, 2: 47, 3: 21, 4: 44}  
+        Outs: 
+            {1: 15, 2: 47, 3: 21, 4: 44}  
