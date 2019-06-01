@@ -1,30 +1,65 @@
 # 1
-# iterate nested list
+Iterate nested list:
 
-def iter_netsed_list(ls):
-    for e in ls:
-        if isinstance(e, (list,tuple)):
-            for ee in flatten_list(e):
-                yield ee
-        else:
-            yield e
+	def iter_netsed_list(ls):
+	    for e in ls:
+		if isinstance(e, (list,tuple)):
+		    for ee in flatten_list(e):
+			yield ee
+		else:
+		    yield e
 
-def flatten_list(ls):
-    return list(iter_netsed_list(ls))
+	def flatten_list(ls):
+	    return list(iter_netsed_list(ls))
 
 # 2
-# chunk list:
-def chunks(l, n):
-	# For item i in a range that is a length of l,
-	for i in range(0, len(l), n):
-		# Create an index range for l of n items:
-		yield l[i:i+n]
-        
-Usage:
-    first_names = ['Steve', 'Jane', 'Sara', 'Mary','Jack','Bob', 'Bily', 'Boni', 'Chris','Sori', 'Will', 'Won','Li']
-    print(list(chunks(first_names, 5)))
+Chunkify list:
+	def chunkify(ls, n):
+	    for i in range(0, len(ls), n):
+		yield ls[i:i+n]
 
-Outs:
-    [['Steve', 'Jane', 'Sara', 'Mary', 'Jack'],
-    ['Bob', 'Bily', 'Boni', 'Chris', 'Sori'],
-    ['Will', 'Won', 'Li']]
+	Usage:
+	    ls = [1,2,3,4,5,6,7,8,9]
+	    print(list(chunkify(ls, 3)))
+
+	Outs:
+	    [[1, 2, 3], [4, 5, 6], [7, 8, 9], [10]]
+
+# 3.1
+Get N-sized sliding frames from list:
+	def frame(ls, win_size):
+	    for i in range(len(ls) - win_size + 1):
+		ls_m = ls[i:i+win_size]
+		yield ls_m
+		
+	Usage:
+	    ls = [1,2,3,4,5]
+	    wind_size = 3        # sliding window size
+	    for wind in frame(ls, wind_size):
+    		print(wind)
+
+	Outs:
+	    [1, 2, 3]
+	    [2, 3, 4]
+	    [3, 4, 5]
+	    
+# 3.2
+Get N-sized sliding frames from list with context:
+	def frame_c(ls, win_size, context):
+	    for i in range(len(ls) - win_size + 1):
+		ls_wind = ls[i:i+win_size]
+		ls_cont = ls[max((i-context),0) : i] + ls[(i+win_size):(i+win_size+context)]
+		yield ls_wind, ls_cont
+		
+	Usage:
+	    ls = [1,2,3,4,5]
+	    wind_size = 2        # sliding window size
+	    context = 2
+	    for wind, context in frame_c(ls, 2, 2):
+    		print(wind, '-', context)
+
+	Outs:
+	    [1, 2] - [3, 4]
+	    [2, 3] - [1, 4, 5]
+	    [3, 4] - [1, 2, 5]
+	    [4, 5] - [2, 3]
