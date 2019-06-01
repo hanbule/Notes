@@ -4,7 +4,7 @@ Copy directories and subdirectories with their contents:
   
 # 1.2
 Copy directories and subdirectories excluding certain contents:
-    robocopy <src dir> <dest dir> /E /XF *.csv     # won't copy csv files
+    robocopy <src dir> <dest dir> /E /XF *.csv *.txt    # won't copy csv files and txt files
   
 # 1.3
 Copy directories and subdirectories excluding certain contents and certain folders:
