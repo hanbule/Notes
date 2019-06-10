@@ -1,6 +1,8 @@
 DB broswer list:
     DBeaver                (does not support REGEXP)
     DB Browser for SQLite  (Link:  https://sqlitebrowser.org/dl/)
+    
+   https://www.sqlite.org/fts3.html#section_8_2 
 
 # 1.1
 Get substring
