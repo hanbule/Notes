@@ -21,13 +21,13 @@ Tokenize text into tokens:
             tokens = re.split("|".join(regs), txt)
             return tokens
 
-Ex:
-Try out 1.1 and 1.2 an compare results:
-    s = "My, numbers 15 and 74,5 4, 5  4, a b , 48,67,666  c ,9"
-    tokenize_1(s)  # 1.1
-    tokenize_1(s)  # 1.2
-    
-    Correct one is ['My', 'numbers', '15', 'and', '74,5', '4', '5', '4', 'a', 'b', '48,67,666', 'c', '9']
+    Ex:
+    Try out 1.1 and 1.2 an compare results:
+        s = "My, numbers 15 and 74,5 4, 5  4, a b , 48,67,666  c ,9"
+        tokenize_1(s)  # 1.1
+        tokenize_1(s)  # 1.2
+
+        Correct one is ['My', 'numbers', '15', 'and', '74,5', '4', '5', '4', 'a', 'b', '48,67,666', 'c', '9']
 
 
 # 2
@@ -39,3 +39,42 @@ Get list of unique tokens from text:
             tokens = tokenize_1(s)
             tokens = list(set(tokens))
             return tokens
+
+# 3.1
+Get N-sized sliding frames from list:
+	def frame(ls, win_size):
+	    for i in range(len(ls) - win_size + 1):
+		ls_m = ls[i:i+win_size]
+		yield ls_m
+		
+	Usage:
+	    ls = [1,2,3,4,5]
+	    wind_size = 3        # sliding window size
+	    for wind in frame(ls, wind_size):
+    		print(wind)
+
+	Outs:
+	    [1, 2, 3]
+	    [2, 3, 4]
+	    [3, 4, 5]
+	    
+# 3.2
+Get N-sized sliding frames from list with context:
+	def frame_c(ls, win_size, context):
+	    for i in range(len(ls) - win_size + 1):
+		ls_wind = ls[i:i+win_size]
+		ls_cont = ls[max((i-context),0) : i] + ls[(i+win_size):(i+win_size+context)]
+		yield ls_wind, ls_cont
+		
+	Usage:
+	    ls = [1,2,3,4,5]
+	    wind_size = 2        # sliding window size
+	    context = 2
+	    for wind, context in frame_c(ls, 2, 2):
+    		print(wind, '-', context)
+
+	Outs:
+	    [1, 2] - [3, 4]
+	    [2, 3] - [1, 4, 5]
+	    [3, 4] - [1, 2, 5]
+	    [4, 5] - [2, 3]
