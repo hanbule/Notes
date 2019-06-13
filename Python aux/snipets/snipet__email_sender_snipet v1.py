@@ -17,7 +17,7 @@ and conseqently:
 # for this to work, need to give permission for unauthorized applications access in gmail account settings
 def email_notify_2(subject,message):
     sender = 'from_me@gmail.com'
-    login_email, password = 'altay.bank@gmail.com', ''   #getpass('password')
+    login_email, password = '...@mail.com', ''   #getpass('password')
     receivers = [login_email]
 
     msg = MIMEText(message, 'plain', 'utf-8')
@@ -39,8 +39,8 @@ def email_notify(subject,message):
 
     smtpObj = smtplib.SMTP('localhost')
 
-    sender = 'research_ops@slice.com'
-    receivers = ['altay@slice.com']
+    sender = '...@mail.com'
+    receivers = ['...@mail.com']
 
     msg = MIMEText(message)
     msg['Subject'] = subject
